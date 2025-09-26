@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Detailed explantions on data results</title>
+    <script type="text/javascript">
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            },
+        svg: { fontCache: 'global' }
+        };
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <style>body { margin: 0; font-family: sans-serif; }</style>
+  </head>
+  <body>
+    <h1 style="text-align: center;">Detailed explantions on data results</h1><br>
+    <div id="explanations">
+      <div class="explanation-section" id="overview">
+        <b>Project overview</b>
+        <p>This project gives an overview of buoy motion and statisics over the time period...</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="projection">
+        <b>Projection used for plotting and calculations.</b>
+        <p>The position of the buoys, sea sectors and sea ice have been converted to PROJ+4 projection. This projection reulsted in the most accurate distance and bearing calculations as well as positional plotting. The projection closely resemebles EPSG:3413, but with different longitudal alignment. The parameters `+x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs` can be found at https://nsidc.org/data/user-resources/help-center/guide-nsidcs-polar-stereographic-projection.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="haversine_formula">
+        <b>Haversine Formula</b>
+        <p>The haversine formula gives the great–circle distance $d$ between two points $(\phi_1,\lambda_1)$ and $(\phi_2,\lambda_2)$ on a sphere of radius $R$:
+\[
+d = 2R \, \arcsin\!\Bigg( \sqrt{\, \sin^2\!\Big(\tfrac{\phi_2-\phi_1}{2}\Big) + \cos\phi_1\,\cos\phi_2\,\sin^2\!\Big(\tfrac{\lambda_2-\lambda_1}{2}\Big)}\, \Bigg).
+\]
+Here $\phi$ denotes latitude and $\lambda$ longitude (in radians).<br>**Notes.**<br>(1) Ensure all angles are converted to radians before applying the trigonometric functions: $\theta_\mathrm{rad} = \theta_\mathrm{deg}\,\pi/180$.<br>(2) $R$ is typically the Earth's mean radius, $R \approx 6371\,\text{km}$.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="life_drift_page">
+        <b>Buoy Life Drift with SAR Measurements</b>
+        <p>All of the data for a buoy is read along with available SAR drift measurements. The closest geographical buoy is marked to the closest SAR measurement. The timeframe of the buoy also is aligned with the timeframe of the SAR drift measurements. Typically a 24-hour period but no always at the same start time. The SAR measurments or made sometimes of the same satellite but more often from two different satellites. For each buoy position, the code takes the start lon/lat as point of comparison to other points; the end date and times are not used.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="life_drift_descriptive_stats">
+        <b>Buoy life descriptive stats</b>
+        <p>The information displayed shows the displacement of a specific buoy over a defined time frame. The SAR measurements also span that same time frame. Correlation for bearing uses degrees converted to radians. See `Circular correlation (Jammalamadaka-Sarma, 2001)`. Distances computed use the `pyproj.GEOD.inv` method, which is very similar to Haversine under the hood. Buoy and SAR distances come from local computations and not distances calculated in the supplied data.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="life_drift_seasonal_scatterplots">
+        <b>Buoy life scatter plots</b>
+        <p>The scatter plots show a breakdown of bearings and distances between buoys and SAR drift per season. Regression has been calculated per season. The `y=x` line shown indicates perfect correlation for reference. Seasons defined as:<br>Winter ⮕ 12/21 to 3/20<br>Spring ⮕ 3/21 to 6/20<br>Summer ⮕ 6/21 to 9/20<br>Fall ⮕ 9/21 to 12/20</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="life_drift_seasonal_bearing_plots">
+        <b>Buoy life bearing plots</b>
+        <p>The plots use two types of measurements: angles in degrees and radians. The choice of 18° resembles N, NNE, NE, ENE, E,... etc. Bearings within 18° can be considered heading in the same direction. The correlation heatmap shows each SAR observation grouped by satellite and season, which is then correalted to the appropriate series of buoy observations. Correllation `1` indicates a perfect correlation while `-1` indicates perfect opposite correlation.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="life_drift_seasonal_distribution">
+        <b>Buoy life distribution and frequency</b>
+        <p>Each seasonal distance for SAR and buoy were grouped into bins of 1 km. Each row indicates a specific buoy. WE see trendss of different distances over the seasons. Winter and early spring show little movement becausee of thick sea-ice pack. As the climate warms, the ice melts and movement increases. That is why we see less of a right-skewed dsitribution late spring through early fall. The colder months show dense clusters around lower distances (km per 24 hours).</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="circular_corr">
+        <b>Circular correlation (Jammalamadaka–Sarma, 2001)</b>
+        <p>Given angle pairs $(\alpha_i,\,\beta_i)$ for $i=1,\dots,n$, let the mean directions be
+\[
+\bar{\alpha}=\operatorname{atan2}\!\Big(\sum_{i=1}^n\sin\alpha_i,\;\sum_{i=1}^n\cos\alpha_i\Big),\quad
+\bar{\beta}=\operatorname{atan2}\!\Big(\sum_{i=1}^n\sin\beta_i,\;\sum_{i=1}^n\cos\beta_i\Big).
+\]
+Then the circular correlation coefficient is
+\[
+\rho_c=\frac{\sum_{i=1}^n\sin(\alpha_i-\bar{\alpha})\,\sin(\beta_i-\bar{\beta})}{\sqrt{\Big(\sum_{i=1}^n\sin^2(\alpha_i-\bar{\alpha})\Big)\,\Big(\sum_{i=1}^n\sin^2(\beta_i-\bar{\beta})\Big)}}\,.
+\]
+**Notes.**<br>(1) Angles must be in radians inside the trig functions. Degrees converted via $\theta_\mathrm{rad}=\theta_\mathrm{deg}\,\pi/180$.<br>(2) $\rho_c\in[-1,1]$ analogous to Pearson's $r$.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,2309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Arctic-wide SAR and Buoy Drift for 2025-06-23</title>
+    <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+    <style>#buoy_and_grid_cell_distances th:nth-child(1), #buoy_and_grid_cell_distances td:nth-child(1) { text-align: left; }#buoy_and_grid_cell_distances th:nth-child(2), #buoy_and_grid_cell_distances td:nth-child(2) { text-align: right; }#buoy_and_grid_cell_distances th:nth-child(3), #buoy_and_grid_cell_distances td:nth-child(3) { text-align: right; }</style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+            $(document).ready(function() {
+                let table = $('#buoy_and_grid_cell_distance_stats table').DataTable();
+
+                let type_order = 'custom-null-sort-pre';
+                $.fn.dataTable.ext.type.order[type_order] = function(data) {
+                    if (data === "" || data === null || data === "Infinity") return Infinity;
+                    if (data === "-Infinity") return -Infinity;
+                    return parseFloat(data);
+                };
+
+                table.on('order.dt', function(e, settings) {
+                    let order = settings.aaSorting[0];
+                    let colIndex = order[0];
+                    let sortDir = order[1];
+
+                    $('#buoy_and_grid_cell_distance_stats table tbody tr td:nth-child(' + (colIndex + 1) + ')').each(function() {
+                        let cell = $(this);
+                        let val = cell.attr('data-order');
+                        if (val === "Infinity" || val === "-Infinity") {
+                            cell.attr('data-order', sortDir === 'asc' ? "-Infinity" : "Infinity");
+                        }
+                    });
+                });
+
+                table.columns().every(function() {
+                    let column = this;
+                    let type = column.data().type();
+                    if (type === 'num') {
+                        column.order('custom-null-sort-pre');
+                    }
+                });
+            });
+        </script>
+    <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+    <style>#buoy_and_grid_cell_distances th:nth-child(1), #buoy_and_grid_cell_distances td:nth-child(1) { text-align: left; }#buoy_and_grid_cell_distances th:nth-child(2), #buoy_and_grid_cell_distances td:nth-child(2) { text-align: center; }#buoy_and_grid_cell_distances th:nth-child(3), #buoy_and_grid_cell_distances td:nth-child(3) { text-align: center; }#buoy_and_grid_cell_distances th:nth-child(4), #buoy_and_grid_cell_distances td:nth-child(4) { text-align: center; }#buoy_and_grid_cell_distances th:nth-child(5), #buoy_and_grid_cell_distances td:nth-child(5) { text-align: center; }#buoy_and_grid_cell_distances th:nth-child(6), #buoy_and_grid_cell_distances td:nth-child(6) { text-align: right; }#buoy_and_grid_cell_distances th:nth-child(7), #buoy_and_grid_cell_distances td:nth-child(7) { text-align: right; }#buoy_and_grid_cell_distances th:nth-child(8), #buoy_and_grid_cell_distances td:nth-child(8) { text-align: right; }#buoy_and_grid_cell_distances th:nth-child(9), #buoy_and_grid_cell_distances td:nth-child(9) { text-align: right; }#buoy_and_grid_cell_distances th:nth-child(10), #buoy_and_grid_cell_distances td:nth-child(10) { text-align: right; }#buoy_and_grid_cell_distances th:nth-child(11), #buoy_and_grid_cell_distances td:nth-child(11) { text-align: right; }#buoy_and_grid_cell_distances th:nth-child(12), #buoy_and_grid_cell_distances td:nth-child(12) { text-align: right; }#buoy_and_grid_cell_distances th:nth-child(13), #buoy_and_grid_cell_distances td:nth-child(13) { text-align: right; }</style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+            $(document).ready(function() {
+                let table = $('#buoy_and_grid_cell_distances table').DataTable();
+
+                let type_order = 'custom-null-sort-pre';
+                $.fn.dataTable.ext.type.order[type_order] = function(data) {
+                    if (data === "" || data === null || data === "Infinity") return Infinity;
+                    if (data === "-Infinity") return -Infinity;
+                    return parseFloat(data);
+                };
+
+                table.on('order.dt', function(e, settings) {
+                    let order = settings.aaSorting[0];
+                    let colIndex = order[0];
+                    let sortDir = order[1];
+
+                    $('#buoy_and_grid_cell_distances table tbody tr td:nth-child(' + (colIndex + 1) + ')').each(function() {
+                        let cell = $(this);
+                        let val = cell.attr('data-order');
+                        if (val === "Infinity" || val === "-Infinity") {
+                            cell.attr('data-order', sortDir === 'asc' ? "-Infinity" : "Infinity");
+                        }
+                    });
+                });
+
+                table.columns().every(function() {
+                    let column = this;
+                    let type = column.data().type();
+                    if (type === 'num') {
+                        column.order('custom-null-sort-pre');
+                    }
+                });
+            });
+        </script>
+    <style>body { margin: 0; font-family: sans-serif; }</style>
+  </head>
+  <body>
+    <h1 style="text-align: center;">Arctic-wide SAR and Buoy Drift for 2025-06-23</h1><br>
+    <div id="buoy_ice_drift">
+      <div id="download_shape_file">
+        <h3 style="text-align: left;">Download shape file ⬇️</h3>
+        <p><a href="D:\NOAA\GitHub\functional_prototype\data\gpkg\drift_vectors_arctic_wide_2025-06-23.gpkg" download="drift_vectors_arctic_wide_2025-06-23.gpkg">Download shapefile for 2025-06-23</a></p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div id="buoy_and_grid_cell_distance_stats"><table border="1" class="dataframe table table-striped sortable">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Measurement</th>
+      <th>Buoy</th>
+      <th>SAR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Count</td>
+      <td data-order="143.00000">143.00000</td>
+      <td data-order="15684.00000">15684.00000</td>
+    </tr>
+    <tr>
+      <td>Mean (km)</td>
+      <td data-order="7.94247">7.94247</td>
+      <td data-order="8.90291">8.90291</td>
+    </tr>
+    <tr>
+      <td>Median (km)</td>
+      <td data-order="7.42441">7.42441</td>
+      <td data-order="8.70123">8.70123</td>
+    </tr>
+    <tr>
+      <td>Std (km)</td>
+      <td data-order="6.67464">6.67464</td>
+      <td data-order="5.15081">5.15081</td>
+    </tr>
+    <tr>
+      <td>Min (km)</td>
+      <td data-order="0.00000">0.00000</td>
+      <td data-order="0.21809">0.21809</td>
+    </tr>
+    <tr>
+      <td>Max (km)</td>
+      <td data-order="36.65189">36.65189</td>
+      <td data-order="46.39235">46.39235</td>
+    </tr>
+    <tr>
+      <td>P90 (km)</td>
+      <td data-order="15.03994">15.03994</td>
+      <td data-order="15.44357">15.44357</td>
+    </tr>
+  </tbody>
+</table></div><br>
+      <div style="height: 20px;"></div>
+      <h3>Buoys and 9 Closest Grid Cells</h3><br>
+      <div style="height: 20px;"></div>
+      <div id="buoy_and_grid_cell_distances"><table border="1" class="dataframe table table-striped sortable">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Buoy ID</th>
+      <th>Buoy Starting Longitude</th>
+      <th>Buoy Starting Latitude</th>
+      <th>Buoy Ending Longitude</th>
+      <th>Buoy Ending Latitude</th>
+      <th>Closest Grid Cell in Group (m)</th>
+      <th>Farthest Grid Close in Group (m)</th>
+      <th>Buoy Distance (km)</th>
+      <th>Average Grid Cell Distance (km)</th>
+      <th>Distance Absolute Difference (km)</th>
+      <th>Buoy Bearing (deg)</th>
+      <th>Average Grid Cell Bearing (deg)</th>
+      <th>Bearing Absolute Difference (deg)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="../buoys/300234060729780.html" target="_blank">300234060729780</a></td>
+      <td data-order="-72.855">-72.855</td>
+      <td data-order="85.773">85.773</td>
+      <td data-order="-72.374">-72.374</td>
+      <td data-order="85.745">85.745</td>
+      <td data-order="4861.172">4861.172</td>
+      <td data-order="20572.257">20572.257</td>
+      <td data-order="5.056087">5.056087</td>
+      <td data-order="6.178411">6.178411</td>
+      <td data-order="1.122324">1.122324</td>
+      <td data-order="127.967435">127.967435</td>
+      <td data-order="140.471325">140.471325</td>
+      <td data-order="12.503889">12.503889</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234062922670.html" target="_blank">300234062922670</a></td>
+      <td data-order="-8.999">-8.999</td>
+      <td data-order="85.354">85.354</td>
+      <td data-order="-8.657">-8.657</td>
+      <td data-order="85.236">85.236</td>
+      <td data-order="2515.636">2515.636</td>
+      <td data-order="20083.243">20083.243</td>
+      <td data-order="13.546274">13.546274</td>
+      <td data-order="15.061560">15.061560</td>
+      <td data-order="1.515286">1.515286</td>
+      <td data-order="166.455995">166.455995</td>
+      <td data-order="166.691790">166.691790</td>
+      <td data-order="0.235795">0.235795</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234062959210.html" target="_blank">300234062959210</a></td>
+      <td data-order="-156.615">-156.615</td>
+      <td data-order="71.323">71.323</td>
+      <td data-order="-156.615">-156.615</td>
+      <td data-order="71.323">71.323</td>
+      <td data-order="78531.391">78531.391</td>
+      <td data-order="93180.361">93180.361</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="5.386763">5.386763</td>
+      <td data-order="5.386763">5.386763</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="141.299590">141.299590</td>
+      <td data-order="38.700410">38.700410</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234063064350.html" target="_blank">300234063064350</a></td>
+      <td data-order="-33.503">-33.503</td>
+      <td data-order="83.792">83.792</td>
+      <td data-order="-33.503">-33.503</td>
+      <td data-order="83.792">83.792</td>
+      <td data-order="16151.281">16151.281</td>
+      <td data-order="39813.750">39813.750</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="4.021499">4.021499</td>
+      <td data-order="4.021499">4.021499</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="45.305450">45.305450</td>
+      <td data-order="134.694550">134.694550</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234063516460.html" target="_blank">300234063516460</a></td>
+      <td data-order="-104.409">-104.409</td>
+      <td data-order="71.264">71.264</td>
+      <td data-order="-104.409">-104.409</td>
+      <td data-order="71.264">71.264</td>
+      <td data-order="537457.635">537457.635</td>
+      <td data-order="560238.344">560238.344</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="1.940316">1.940316</td>
+      <td data-order="1.940316">1.940316</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="297.408637">297.408637</td>
+      <td data-order="117.408637">117.408637</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234065495190.html" target="_blank">300234065495190</a></td>
+      <td data-order="-127.291">-127.291</td>
+      <td data-order="70.138">70.138</td>
+      <td data-order="-127.279">-127.279</td>
+      <td data-order="70.173">70.173</td>
+      <td data-order="88752.045">88752.045</td>
+      <td data-order="109217.659">109217.659</td>
+      <td data-order="3.931139">3.931139</td>
+      <td data-order="4.235580">4.235580</td>
+      <td data-order="0.304441">0.304441</td>
+      <td data-order="6.638208">6.638208</td>
+      <td data-order="170.693463">170.693463</td>
+      <td data-order="164.055255">164.055255</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234066028200.html" target="_blank">300234066028200</a></td>
+      <td data-order="-142.364">-142.364</td>
+      <td data-order="30.650">30.650</td>
+      <td data-order="-142.658">-142.658</td>
+      <td data-order="30.648">30.648</td>
+      <td data-order="4878374.696">4878374.696</td>
+      <td data-order="4899874.632">4899874.632</td>
+      <td data-order="28.181435">28.181435</td>
+      <td data-order="6.845809">6.845809</td>
+      <td data-order="21.335626">21.335626</td>
+      <td data-order="269.624140">269.624140</td>
+      <td data-order="277.242801">277.242801</td>
+      <td data-order="7.618661">7.618661</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234066031190.html" target="_blank">300234066031190</a></td>
+      <td data-order="-88.473">-88.473</td>
+      <td data-order="73.487">73.487</td>
+      <td data-order="-88.473">-88.473</td>
+      <td data-order="73.487">73.487</td>
+      <td data-order="668260.417">668260.417</td>
+      <td data-order="685929.784">685929.784</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="2.258875">2.258875</td>
+      <td data-order="2.258875">2.258875</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="154.561709">154.561709</td>
+      <td data-order="25.438291">25.438291</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234066215880.html" target="_blank">300234066215880</a></td>
+      <td data-order="-52.876">-52.876</td>
+      <td data-order="65.468">65.468</td>
+      <td data-order="-52.877">-52.877</td>
+      <td data-order="65.468">65.468</td>
+      <td data-order="336925.712">336925.712</td>
+      <td data-order="355921.677">355921.677</td>
+      <td data-order="0.046349">0.046349</td>
+      <td data-order="6.280177">6.280177</td>
+      <td data-order="6.233828">6.233828</td>
+      <td data-order="270.000455">270.000455</td>
+      <td data-order="152.310945">152.310945</td>
+      <td data-order="117.689510">117.689510</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234066534020.html" target="_blank">300234066534020</a></td>
+      <td data-order="23.622">23.622</td>
+      <td data-order="70.697">70.697</td>
+      <td data-order="23.621">23.621</td>
+      <td data-order="70.697">70.697</td>
+      <td data-order="1143339.059">1143339.059</td>
+      <td data-order="1166417.986">1166417.986</td>
+      <td data-order="0.036908">0.036908</td>
+      <td data-order="2.420130">2.420130</td>
+      <td data-order="2.383222">2.383222</td>
+      <td data-order="270.000472">270.000472</td>
+      <td data-order="268.860070">268.860070</td>
+      <td data-order="1.140401">1.140401</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234066991420.html" target="_blank">300234066991420</a></td>
+      <td data-order="-139.997">-139.997</td>
+      <td data-order="69.611">69.611</td>
+      <td data-order="-139.997">-139.997</td>
+      <td data-order="69.611">69.611</td>
+      <td data-order="79167.630">79167.630</td>
+      <td data-order="94852.792">94852.792</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="7.544525">7.544525</td>
+      <td data-order="7.544525">7.544525</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="298.829462">298.829462</td>
+      <td data-order="118.829462">118.829462</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234067976260.html" target="_blank">300234067976260</a></td>
+      <td data-order="-14.300">-14.300</td>
+      <td data-order="58.448">58.448</td>
+      <td data-order="-14.237">-14.237</td>
+      <td data-order="58.390">58.390</td>
+      <td data-order="1460071.241">1460071.241</td>
+      <td data-order="1512766.648">1512766.648</td>
+      <td data-order="7.435803">7.435803</td>
+      <td data-order="5.005414">5.005414</td>
+      <td data-order="2.430389">2.430389</td>
+      <td data-order="150.294270">150.294270</td>
+      <td data-order="178.647177">178.647177</td>
+      <td data-order="28.352906">28.352906</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234067977320.html" target="_blank">300234067977320</a></td>
+      <td data-order="45.814">45.814</td>
+      <td data-order="75.012">75.012</td>
+      <td data-order="45.614">45.614</td>
+      <td data-order="75.006">75.006</td>
+      <td data-order="803952.301">803952.301</td>
+      <td data-order="839176.676">839176.676</td>
+      <td data-order="5.815700">5.815700</td>
+      <td data-order="10.507336">10.507336</td>
+      <td data-order="4.691635">4.691635</td>
+      <td data-order="263.484003">263.484003</td>
+      <td data-order="132.342868">132.342868</td>
+      <td data-order="131.141135">131.141135</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234068040050.html" target="_blank">300234068040050</a></td>
+      <td data-order="7.457">7.457</td>
+      <td data-order="71.971">71.971</td>
+      <td data-order="6.727">6.727</td>
+      <td data-order="71.848">71.848</td>
+      <td data-order="700261.792">700261.792</td>
+      <td data-order="709336.549">709336.549</td>
+      <td data-order="28.791975">28.791975</td>
+      <td data-order="3.425004">3.425004</td>
+      <td data-order="25.366971">25.366971</td>
+      <td data-order="241.877826">241.877826</td>
+      <td data-order="232.779255">232.779255</td>
+      <td data-order="9.098570">9.098570</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234068342220.html" target="_blank">300234068342220</a></td>
+      <td data-order="-39.496">-39.496</td>
+      <td data-order="28.711">28.711</td>
+      <td data-order="-39.583">-39.583</td>
+      <td data-order="28.609">28.609</td>
+      <td data-order="4403647.129">4403647.129</td>
+      <td data-order="4906770.210">4906770.210</td>
+      <td data-order="14.146623">14.146623</td>
+      <td data-order="6.312314">6.312314</td>
+      <td data-order="7.834309">7.834309</td>
+      <td data-order="216.975882">216.975882</td>
+      <td data-order="247.060772">247.060772</td>
+      <td data-order="30.084889">30.084889</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234068760770.html" target="_blank">300234068760770</a></td>
+      <td data-order="-49.969">-49.969</td>
+      <td data-order="83.445">83.445</td>
+      <td data-order="-49.969">-49.969</td>
+      <td data-order="83.445">83.445</td>
+      <td data-order="5657.745">5657.745</td>
+      <td data-order="20722.814">20722.814</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="1.225114">1.225114</td>
+      <td data-order="1.225114">1.225114</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="208.975683">208.975683</td>
+      <td data-order="28.975683">28.975683</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234068762760.html" target="_blank">300234068762760</a></td>
+      <td data-order="-127.495">-127.495</td>
+      <td data-order="72.427">72.427</td>
+      <td data-order="-127.606">-127.606</td>
+      <td data-order="72.390">72.390</td>
+      <td data-order="7302.625">7302.625</td>
+      <td data-order="19877.967">19877.967</td>
+      <td data-order="5.574868">5.574868</td>
+      <td data-order="5.467093">5.467093</td>
+      <td data-order="0.107775">0.107775</td>
+      <td data-order="222.268599">222.268599</td>
+      <td data-order="207.733148">207.733148</td>
+      <td data-order="14.535452">14.535452</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234068763470.html" target="_blank">300234068763470</a></td>
+      <td data-order="-138.246">-138.246</td>
+      <td data-order="45.681">45.681</td>
+      <td data-order="-138.125">-138.125</td>
+      <td data-order="45.711">45.711</td>
+      <td data-order="2863054.986">2863054.986</td>
+      <td data-order="2888857.024">2888857.024</td>
+      <td data-order="9.996728">9.996728</td>
+      <td data-order="6.683341">6.683341</td>
+      <td data-order="3.313387">3.313387</td>
+      <td data-order="70.472612">70.472612</td>
+      <td data-order="274.151428">274.151428</td>
+      <td data-order="203.678816">203.678816</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234068763720.html" target="_blank">300234068763720</a></td>
+      <td data-order="-43.864">-43.864</td>
+      <td data-order="53.108">53.108</td>
+      <td data-order="-43.495">-43.495</td>
+      <td data-order="53.123">53.123</td>
+      <td data-order="1404403.576">1404403.576</td>
+      <td data-order="1736721.338">1736721.338</td>
+      <td data-order="24.763775">24.763775</td>
+      <td data-order="6.312314">6.312314</td>
+      <td data-order="18.451461">18.451461</td>
+      <td data-order="85.987205">85.987205</td>
+      <td data-order="247.060772">247.060772</td>
+      <td data-order="161.073567">161.073567</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234068769540.html" target="_blank">300234068769540</a></td>
+      <td data-order="-135.231">-135.231</td>
+      <td data-order="57.049">57.049</td>
+      <td data-order="-135.231">-135.231</td>
+      <td data-order="57.049">57.049</td>
+      <td data-order="1487013.941">1487013.941</td>
+      <td data-order="1511039.261">1511039.261</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="6.694259">6.694259</td>
+      <td data-order="6.694259">6.694259</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="273.245641">273.245641</td>
+      <td data-order="93.245641">93.245641</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300434065752650.html" target="_blank">300434065752650</a></td>
+      <td data-order="-156.616">-156.616</td>
+      <td data-order="71.324">71.324</td>
+      <td data-order="-156.614">-156.614</td>
+      <td data-order="71.323">71.323</td>
+      <td data-order="78477.490">78477.490</td>
+      <td data-order="93065.041">93065.041</td>
+      <td data-order="0.132527">0.132527</td>
+      <td data-order="5.386763">5.386763</td>
+      <td data-order="5.254236">5.254236</td>
+      <td data-order="147.343586">147.343586</td>
+      <td data-order="141.299590">141.299590</td>
+      <td data-order="6.043997">6.043997</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300434065886730.html" target="_blank">300434065886730</a></td>
+      <td data-order="-170.791">-170.791</td>
+      <td data-order="74.587">74.587</td>
+      <td data-order="-170.733">-170.733</td>
+      <td data-order="74.673">74.673</td>
+      <td data-order="6090.759">6090.759</td>
+      <td data-order="21839.542">21839.542</td>
+      <td data-order="9.751159">9.751159</td>
+      <td data-order="12.153178">12.153178</td>
+      <td data-order="2.402019">2.402019</td>
+      <td data-order="10.111631">10.111631</td>
+      <td data-order="327.377724">327.377724</td>
+      <td data-order="317.266093">317.266093</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534060426630.html" target="_blank">300534060426630</a></td>
+      <td data-order="-117.816">-117.816</td>
+      <td data-order="83.595">83.595</td>
+      <td data-order="-117.253">-117.253</td>
+      <td data-order="83.598">83.598</td>
+      <td data-order="5313.776">5313.776</td>
+      <td data-order="32304.115">32304.115</td>
+      <td data-order="7.021074">7.021074</td>
+      <td data-order="4.933109">4.933109</td>
+      <td data-order="2.087965">2.087965</td>
+      <td data-order="86.985143">86.985143</td>
+      <td data-order="90.693794">90.693794</td>
+      <td data-order="3.708651">3.708651</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534061096030.html" target="_blank">300534061096030</a></td>
+      <td data-order="175.761">175.761</td>
+      <td data-order="75.611">75.611</td>
+      <td data-order="175.803">175.803</td>
+      <td data-order="75.709">75.709</td>
+      <td data-order="148996.846">148996.846</td>
+      <td data-order="176350.685">176350.685</td>
+      <td data-order="11.000730">11.000730</td>
+      <td data-order="12.945310">12.945310</td>
+      <td data-order="1.944580">1.944580</td>
+      <td data-order="6.041207">6.041207</td>
+      <td data-order="256.244603">256.244603</td>
+      <td data-order="250.203396">250.203396</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534061515080.html" target="_blank">300534061515080</a></td>
+      <td data-order="-18.099">-18.099</td>
+      <td data-order="78.610">78.610</td>
+      <td data-order="-18.099">-18.099</td>
+      <td data-order="78.610">78.610</td>
+      <td data-order="109554.713">109554.713</td>
+      <td data-order="136487.701">136487.701</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="2.078478">2.078478</td>
+      <td data-order="2.078478">2.078478</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="35.167685">35.167685</td>
+      <td data-order="144.832315">144.832315</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534061592170.html" target="_blank">300534061592170</a></td>
+      <td data-order="-14.582">-14.582</td>
+      <td data-order="82.049">82.049</td>
+      <td data-order="-13.886">-13.886</td>
+      <td data-order="81.963">81.963</td>
+      <td data-order="75367.326">75367.326</td>
+      <td data-order="141005.379">141005.379</td>
+      <td data-order="14.460059">14.460059</td>
+      <td data-order="8.482478">8.482478</td>
+      <td data-order="5.977582">5.977582</td>
+      <td data-order="131.272424">131.272424</td>
+      <td data-order="169.451121">169.451121</td>
+      <td data-order="38.178697">38.178697</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534061981520.html" target="_blank">300534061981520</a></td>
+      <td data-order="-177.888">-177.888</td>
+      <td data-order="70.140">70.140</td>
+      <td data-order="-177.866">-177.866</td>
+      <td data-order="70.213">70.213</td>
+      <td data-order="73645.124">73645.124</td>
+      <td data-order="96865.258">96865.258</td>
+      <td data-order="8.186679">8.186679</td>
+      <td data-order="11.709969">11.709969</td>
+      <td data-order="3.523290">3.523290</td>
+      <td data-order="5.829608">5.829608</td>
+      <td data-order="322.136777">322.136777</td>
+      <td data-order="316.307168">316.307168</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534062028520.html" target="_blank">300534062028520</a></td>
+      <td data-order="-18.490">-18.490</td>
+      <td data-order="63.703">63.703</td>
+      <td data-order="-18.490">-18.490</td>
+      <td data-order="63.703">63.703</td>
+      <td data-order="833422.366">833422.366</td>
+      <td data-order="884671.764">884671.764</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="5.005414">5.005414</td>
+      <td data-order="5.005414">5.005414</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="178.647177">178.647177</td>
+      <td data-order="1.352823">1.352823</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534062129810.html" target="_blank">300534062129810</a></td>
+      <td data-order="-92.996">-92.996</td>
+      <td data-order="84.808">84.808</td>
+      <td data-order="-92.806">-92.806</td>
+      <td data-order="84.789">84.789</td>
+      <td data-order="4652.051">4652.051</td>
+      <td data-order="20896.107">20896.107</td>
+      <td data-order="2.864309">2.864309</td>
+      <td data-order="4.009560">4.009560</td>
+      <td data-order="1.145251">1.145251</td>
+      <td data-order="137.708758">137.708758</td>
+      <td data-order="129.425565">129.425565</td>
+      <td data-order="8.283192">8.283192</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534062196230.html" target="_blank">300534062196230</a></td>
+      <td data-order="-20.891">-20.891</td>
+      <td data-order="65.604">65.604</td>
+      <td data-order="-20.891">-20.891</td>
+      <td data-order="65.604">65.604</td>
+      <td data-order="617507.183">617507.183</td>
+      <td data-order="666054.999">666054.999</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="5.005414">5.005414</td>
+      <td data-order="5.005414">5.005414</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="178.647177">178.647177</td>
+      <td data-order="1.352823">1.352823</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534062598760.html" target="_blank">300534062598760</a></td>
+      <td data-order="-147.606">-147.606</td>
+      <td data-order="74.618">74.618</td>
+      <td data-order="-147.671">-147.671</td>
+      <td data-order="74.716">74.716</td>
+      <td data-order="27735.390">27735.390</td>
+      <td data-order="45317.266">45317.266</td>
+      <td data-order="11.105390">11.105390</td>
+      <td data-order="10.457799">10.457799</td>
+      <td data-order="0.647592">0.647592</td>
+      <td data-order="350.079028">350.079028</td>
+      <td data-order="304.600650">304.600650</td>
+      <td data-order="45.478378">45.478378</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534062721510.html" target="_blank">300534062721510</a></td>
+      <td data-order="-117.817">-117.817</td>
+      <td data-order="83.595">83.595</td>
+      <td data-order="-117.579">-117.579</td>
+      <td data-order="83.584">83.584</td>
+      <td data-order="5312.573">5312.573</td>
+      <td data-order="32296.664">32296.664</td>
+      <td data-order="3.212111">3.212111</td>
+      <td data-order="4.933109">4.933109</td>
+      <td data-order="1.720999">1.720999</td>
+      <td data-order="112.367358">112.367358</td>
+      <td data-order="90.693794">90.693794</td>
+      <td data-order="21.673564">21.673564</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534062726500.html" target="_blank">300534062726500</a></td>
+      <td data-order="-123.706">-123.706</td>
+      <td data-order="80.320">80.320</td>
+      <td data-order="-123.507">-123.507</td>
+      <td data-order="80.319">80.319</td>
+      <td data-order="135222.352">135222.352</td>
+      <td data-order="160753.997">160753.997</td>
+      <td data-order="3.738884">3.738884</td>
+      <td data-order="4.296095">4.296095</td>
+      <td data-order="0.557211">0.557211</td>
+      <td data-order="91.613312">91.613312</td>
+      <td data-order="197.852051">197.852051</td>
+      <td data-order="106.238739">106.238739</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534062891690.html" target="_blank">300534062891690</a></td>
+      <td data-order="-142.513">-142.513</td>
+      <td data-order="77.594">77.594</td>
+      <td data-order="-142.347">-142.347</td>
+      <td data-order="77.668">77.668</td>
+      <td data-order="7857.306">7857.306</td>
+      <td data-order="20318.161">20318.161</td>
+      <td data-order="9.166337">9.166337</td>
+      <td data-order="5.647339">5.647339</td>
+      <td data-order="3.518999">3.518999</td>
+      <td data-order="25.590987">25.590987</td>
+      <td data-order="15.271349">15.271349</td>
+      <td data-order="10.319639">10.319639</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063052380.html" target="_blank">300534063052380</a></td>
+      <td data-order="-117.795">-117.795</td>
+      <td data-order="83.593">83.593</td>
+      <td data-order="-117.253">-117.253</td>
+      <td data-order="83.598">83.598</td>
+      <td data-order="5130.545">5130.545</td>
+      <td data-order="32291.052">32291.052</td>
+      <td data-order="6.775587">6.775587</td>
+      <td data-order="4.933109">4.933109</td>
+      <td data-order="1.842478">1.842478</td>
+      <td data-order="85.003438">85.003438</td>
+      <td data-order="90.693794">90.693794</td>
+      <td data-order="5.690356">5.690356</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063482290.html" target="_blank">300534063482290</a></td>
+      <td data-order="-38.587">-38.587</td>
+      <td data-order="84.976">84.976</td>
+      <td data-order="-38.184">-38.184</td>
+      <td data-order="84.949">84.949</td>
+      <td data-order="5251.193">5251.193</td>
+      <td data-order="20584.398">20584.398</td>
+      <td data-order="4.971339">4.971339</td>
+      <td data-order="3.221346">3.221346</td>
+      <td data-order="1.749993">1.749993</td>
+      <td data-order="127.141450">127.141450</td>
+      <td data-order="113.393102">113.393102</td>
+      <td data-order="13.748348">13.748348</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063483320.html" target="_blank">300534063483320</a></td>
+      <td data-order="-25.309">-25.309</td>
+      <td data-order="84.307">84.307</td>
+      <td data-order="-24.935">-24.935</td>
+      <td data-order="84.243">84.243</td>
+      <td data-order="1721.785">1721.785</td>
+      <td data-order="26362.747">26362.747</td>
+      <td data-order="8.273591">8.273591</td>
+      <td data-order="7.476400">7.476400</td>
+      <td data-order="0.797190">0.797190</td>
+      <td data-order="149.572682">149.572682</td>
+      <td data-order="137.716936">137.716936</td>
+      <td data-order="11.855746">11.855746</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063486690.html" target="_blank">300534063486690</a></td>
+      <td data-order="-5.762">-5.762</td>
+      <td data-order="77.466">77.466</td>
+      <td data-order="-4.466">-4.466</td>
+      <td data-order="77.345">77.345</td>
+      <td data-order="14333.155">14333.155</td>
+      <td data-order="38616.379">38616.379</td>
+      <td data-order="34.327444">34.327444</td>
+      <td data-order="2.481321">2.481321</td>
+      <td data-order="31.846123">31.846123</td>
+      <td data-order="112.539644">112.539644</td>
+      <td data-order="267.438821">267.438821</td>
+      <td data-order="154.899176">154.899176</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063487700.html" target="_blank">300534063487700</a></td>
+      <td data-order="43.640">43.640</td>
+      <td data-order="68.501">68.501</td>
+      <td data-order="43.640">43.640</td>
+      <td data-order="68.501">68.501</td>
+      <td data-order="1523692.665">1523692.665</td>
+      <td data-order="1562927.779">1562927.779</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="10.321723">10.321723</td>
+      <td data-order="10.321723">10.321723</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="132.462751">132.462751</td>
+      <td data-order="47.537249">47.537249</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063488690.html" target="_blank">300534063488690</a></td>
+      <td data-order="-16.278">-16.278</td>
+      <td data-order="73.474">73.474</td>
+      <td data-order="-16.398">-16.398</td>
+      <td data-order="73.502">73.502</td>
+      <td data-order="2749.441">2749.441</td>
+      <td data-order="22360.079">22360.079</td>
+      <td data-order="4.926327">4.926327</td>
+      <td data-order="9.322727">9.322727</td>
+      <td data-order="4.396400">4.396400</td>
+      <td data-order="309.427239">309.427239</td>
+      <td data-order="252.947025">252.947025</td>
+      <td data-order="56.480214">56.480214</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063800110.html" target="_blank">300534063800110</a></td>
+      <td data-order="171.938">171.938</td>
+      <td data-order="70.390">70.390</td>
+      <td data-order="171.894">171.894</td>
+      <td data-order="70.398">70.398</td>
+      <td data-order="145054.340">145054.340</td>
+      <td data-order="171186.894">171186.894</td>
+      <td data-order="1.874567">1.874567</td>
+      <td data-order="7.434815">7.434815</td>
+      <td data-order="5.560248">5.560248</td>
+      <td data-order="298.453611">298.453611</td>
+      <td data-order="199.906600">199.906600</td>
+      <td data-order="98.547011">98.547011</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063803110.html" target="_blank">300534063803110</a></td>
+      <td data-order="-72.184">-72.184</td>
+      <td data-order="87.205">87.205</td>
+      <td data-order="-70.780">-70.780</td>
+      <td data-order="87.158">87.158</td>
+      <td data-order="13031.876">13031.876</td>
+      <td data-order="33115.331">33115.331</td>
+      <td data-order="9.327933">9.327933</td>
+      <td data-order="6.625919">6.625919</td>
+      <td data-order="2.702015">2.702015</td>
+      <td data-order="123.543560">123.543560</td>
+      <td data-order="108.445146">108.445146</td>
+      <td data-order="15.098413">15.098413</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063803130.html" target="_blank">300534063803130</a></td>
+      <td data-order="-46.962">-46.962</td>
+      <td data-order="87.336">87.336</td>
+      <td data-order="-45.281">-45.281</td>
+      <td data-order="87.277">87.277</td>
+      <td data-order="6407.877">6407.877</td>
+      <td data-order="31550.270">31550.270</td>
+      <td data-order="11.011825">11.011825</td>
+      <td data-order="6.196094">6.196094</td>
+      <td data-order="4.815731">4.815731</td>
+      <td data-order="125.913309">125.913309</td>
+      <td data-order="119.623462">119.623462</td>
+      <td data-order="6.289846">6.289846</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063804120.html" target="_blank">300534063804120</a></td>
+      <td data-order="-153.816">-153.816</td>
+      <td data-order="84.645">84.645</td>
+      <td data-order="-152.981">-152.981</td>
+      <td data-order="84.748">84.748</td>
+      <td data-order="8288.975">8288.975</td>
+      <td data-order="19864.132">19864.132</td>
+      <td data-order="14.374693">14.374693</td>
+      <td data-order="11.759963">11.759963</td>
+      <td data-order="2.614730">2.614730</td>
+      <td data-order="36.431411">36.431411</td>
+      <td data-order="31.363994">31.363994</td>
+      <td data-order="5.067416">5.067416</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063804290.html" target="_blank">300534063804290</a></td>
+      <td data-order="-27.156">-27.156</td>
+      <td data-order="86.091">86.091</td>
+      <td data-order="-26.255">-26.255</td>
+      <td data-order="86.004">86.004</td>
+      <td data-order="3337.996">3337.996</td>
+      <td data-order="20855.366">20855.366</td>
+      <td data-order="11.938560">11.938560</td>
+      <td data-order="11.104310">11.104310</td>
+      <td data-order="0.834250">0.834250</td>
+      <td data-order="144.027793">144.027793</td>
+      <td data-order="139.616727">139.616727</td>
+      <td data-order="4.411065">4.411065</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063804320.html" target="_blank">300534063804320</a></td>
+      <td data-order="173.484">173.484</td>
+      <td data-order="70.873">70.873</td>
+      <td data-order="173.398">173.398</td>
+      <td data-order="71.013">71.013</td>
+      <td data-order="177460.216">177460.216</td>
+      <td data-order="203002.469">203002.469</td>
+      <td data-order="15.931849">15.931849</td>
+      <td data-order="5.689799">5.689799</td>
+      <td data-order="10.242049">10.242049</td>
+      <td data-order="348.691393">348.691393</td>
+      <td data-order="180.132471">180.132471</td>
+      <td data-order="168.558921">168.558921</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534063806290.html" target="_blank">300534063806290</a></td>
+      <td data-order="174.382">174.382</td>
+      <td data-order="71.803">71.803</td>
+      <td data-order="174.421">174.421</td>
+      <td data-order="71.909">71.909</td>
+      <td data-order="194947.194">194947.194</td>
+      <td data-order="214461.048">214461.048</td>
+      <td data-order="11.905446">11.905446</td>
+      <td data-order="8.232256">8.232256</td>
+      <td data-order="3.673190">3.673190</td>
+      <td data-order="6.521812">6.521812</td>
+      <td data-order="199.739124">199.739124</td>
+      <td data-order="193.217312">193.217312</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064262600.html" target="_blank">300534064262600</a></td>
+      <td data-order="-43.702">-43.702</td>
+      <td data-order="58.893">58.893</td>
+      <td data-order="-43.876">-43.876</td>
+      <td data-order="58.918">58.918</td>
+      <td data-order="1094183.979">1094183.979</td>
+      <td data-order="1178568.705">1178568.705</td>
+      <td data-order="10.407586">10.407586</td>
+      <td data-order="2.683879">2.683879</td>
+      <td data-order="7.723708">7.723708</td>
+      <td data-order="285.594655">285.594655</td>
+      <td data-order="246.273902">246.273902</td>
+      <td data-order="39.320753">39.320753</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064263610.html" target="_blank">300534064263610</a></td>
+      <td data-order="-156.669">-156.669</td>
+      <td data-order="71.341">71.341</td>
+      <td data-order="-156.669">-156.669</td>
+      <td data-order="71.341">71.341</td>
+      <td data-order="76315.838">76315.838</td>
+      <td data-order="91465.813">91465.813</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="6.921689">6.921689</td>
+      <td data-order="6.921689">6.921689</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="111.851833">111.851833</td>
+      <td data-order="68.148167">68.148167</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064266590.html" target="_blank">300534064266590</a></td>
+      <td data-order="171.972">171.972</td>
+      <td data-order="73.604">73.604</td>
+      <td data-order="171.849">171.849</td>
+      <td data-order="73.698">73.698</td>
+      <td data-order="140490.395">140490.395</td>
+      <td data-order="174737.352">174737.352</td>
+      <td data-order="11.180539">11.180539</td>
+      <td data-order="12.831517">12.831517</td>
+      <td data-order="1.650978">1.650978</td>
+      <td data-order="339.828850">339.828850</td>
+      <td data-order="207.183781">207.183781</td>
+      <td data-order="132.645070">132.645070</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064360510.html" target="_blank">300534064360510</a></td>
+      <td data-order="50.831">50.831</td>
+      <td data-order="89.246">89.246</td>
+      <td data-order="42.878">42.878</td>
+      <td data-order="89.241">89.241</td>
+      <td data-order="89839.956">89839.956</td>
+      <td data-order="115695.031">115695.031</td>
+      <td data-order="11.732100">11.732100</td>
+      <td data-order="9.974554">9.974554</td>
+      <td data-order="1.757546">1.757546</td>
+      <td data-order="271.254315">271.254315</td>
+      <td data-order="186.469438">186.469438</td>
+      <td data-order="84.784877">84.784877</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064360830.html" target="_blank">300534064360830</a></td>
+      <td data-order="-172.877">-172.877</td>
+      <td data-order="78.410">78.410</td>
+      <td data-order="-172.719">-172.719</td>
+      <td data-order="78.542">78.542</td>
+      <td data-order="4676.664">4676.664</td>
+      <td data-order="20902.240">20902.240</td>
+      <td data-order="15.153376">15.153376</td>
+      <td data-order="13.398078">13.398078</td>
+      <td data-order="1.755299">1.755299</td>
+      <td data-order="13.374609">13.374609</td>
+      <td data-order="4.472061">4.472061</td>
+      <td data-order="8.902548">8.902548</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064361500.html" target="_blank">300534064361500</a></td>
+      <td data-order="-176.543">-176.543</td>
+      <td data-order="76.495">76.495</td>
+      <td data-order="-176.452">-176.452</td>
+      <td data-order="76.607">76.607</td>
+      <td data-order="8450.027">8450.027</td>
+      <td data-order="20017.491">20017.491</td>
+      <td data-order="12.724325">12.724325</td>
+      <td data-order="14.216838">14.216838</td>
+      <td data-order="1.492512">1.492512</td>
+      <td data-order="10.660618">10.660618</td>
+      <td data-order="8.655227">8.655227</td>
+      <td data-order="2.005391">2.005391</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064361820.html" target="_blank">300534064361820</a></td>
+      <td data-order="-126.990">-126.990</td>
+      <td data-order="70.079">70.079</td>
+      <td data-order="-126.990">-126.990</td>
+      <td data-order="70.079">70.079</td>
+      <td data-order="86501.479">86501.479</td>
+      <td data-order="114577.356">114577.356</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="3.744632">3.744632</td>
+      <td data-order="3.744632">3.744632</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="149.839503">149.839503</td>
+      <td data-order="30.160497">30.160497</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064362500.html" target="_blank">300534064362500</a></td>
+      <td data-order="175.818">175.818</td>
+      <td data-order="73.917">73.917</td>
+      <td data-order="175.735">175.735</td>
+      <td data-order="73.999">73.999</td>
+      <td data-order="172150.060">172150.060</td>
+      <td data-order="213539.082">213539.082</td>
+      <td data-order="9.503466">9.503466</td>
+      <td data-order="12.469288">12.469288</td>
+      <td data-order="2.965822">2.965822</td>
+      <td data-order="344.405290">344.405290</td>
+      <td data-order="333.973659">333.973659</td>
+      <td data-order="10.431631">10.431631</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064364400.html" target="_blank">300534064364400</a></td>
+      <td data-order="-117.820">-117.820</td>
+      <td data-order="83.594">83.594</td>
+      <td data-order="-117.221">-117.221</td>
+      <td data-order="83.600">83.600</td>
+      <td data-order="5200.941">5200.941</td>
+      <td data-order="32188.622">32188.622</td>
+      <td data-order="7.490959">7.490959</td>
+      <td data-order="4.933109">4.933109</td>
+      <td data-order="2.557850">2.557850</td>
+      <td data-order="84.570369">84.570369</td>
+      <td data-order="90.693794">90.693794</td>
+      <td data-order="6.123425">6.123425</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064365820.html" target="_blank">300534064365820</a></td>
+      <td data-order="-147.495">-147.495</td>
+      <td data-order="76.477">76.477</td>
+      <td data-order="-147.499">-147.499</td>
+      <td data-order="76.524">76.524</td>
+      <td data-order="5415.898">5415.898</td>
+      <td data-order="21617.065">21617.065</td>
+      <td data-order="5.247763">5.247763</td>
+      <td data-order="8.725707">8.725707</td>
+      <td data-order="3.477945">3.477945</td>
+      <td data-order="358.863383">358.863383</td>
+      <td data-order="200.122975">200.122975</td>
+      <td data-order="158.740408">158.740408</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064366500.html" target="_blank">300534064366500</a></td>
+      <td data-order="-157.015">-157.015</td>
+      <td data-order="86.746">86.746</td>
+      <td data-order="-155.944">-155.944</td>
+      <td data-order="86.832">86.832</td>
+      <td data-order="74485.196">74485.196</td>
+      <td data-order="91866.811">91866.811</td>
+      <td data-order="11.711113">11.711113</td>
+      <td data-order="10.943668">10.943668</td>
+      <td data-order="0.767445">0.767445</td>
+      <td data-order="34.364766">34.364766</td>
+      <td data-order="55.063342">55.063342</td>
+      <td data-order="20.698577">20.698577</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064367490.html" target="_blank">300534064367490</a></td>
+      <td data-order="-178.779">-178.779</td>
+      <td data-order="82.279">82.279</td>
+      <td data-order="-178.585">-178.585</td>
+      <td data-order="82.445">82.445</td>
+      <td data-order="52587.218">52587.218</td>
+      <td data-order="72205.244">72205.244</td>
+      <td data-order="18.760227">18.760227</td>
+      <td data-order="18.767903">18.767903</td>
+      <td data-order="0.007675">0.007675</td>
+      <td data-order="8.734267">8.734267</td>
+      <td data-order="10.100865">10.100865</td>
+      <td data-order="1.366598">1.366598</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064368500.html" target="_blank">300534064368500</a></td>
+      <td data-order="-154.581">-154.581</td>
+      <td data-order="81.610">81.610</td>
+      <td data-order="-154.075">-154.075</td>
+      <td data-order="81.730">81.730</td>
+      <td data-order="1910.304">1910.304</td>
+      <td data-order="19566.290">19566.290</td>
+      <td data-order="15.703493">15.703493</td>
+      <td data-order="14.999068">14.999068</td>
+      <td data-order="0.704425">0.704425</td>
+      <td data-order="31.173644">31.173644</td>
+      <td data-order="35.137465">35.137465</td>
+      <td data-order="3.963822">3.963822</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064369490.html" target="_blank">300534064369490</a></td>
+      <td data-order="-164.520">-164.520</td>
+      <td data-order="81.885">81.885</td>
+      <td data-order="-164.121">-164.121</td>
+      <td data-order="82.032">82.032</td>
+      <td data-order="3639.245">3639.245</td>
+      <td data-order="21316.525">21316.525</td>
+      <td data-order="17.559495">17.559495</td>
+      <td data-order="16.251764">16.251764</td>
+      <td data-order="1.307732">1.307732</td>
+      <td data-order="20.596937">20.596937</td>
+      <td data-order="31.821611">31.821611</td>
+      <td data-order="11.224674">11.224674</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064423650.html" target="_blank">300534064423650</a></td>
+      <td data-order="-20.350">-20.350</td>
+      <td data-order="67.123">67.123</td>
+      <td data-order="-21.059">-21.059</td>
+      <td data-order="66.946">66.946</td>
+      <td data-order="444894.292">444894.292</td>
+      <td data-order="494104.221">494104.221</td>
+      <td data-order="36.651888">36.651888</td>
+      <td data-order="5.005414">5.005414</td>
+      <td data-order="31.646474">31.646474</td>
+      <td data-order="237.741021">237.741021</td>
+      <td data-order="178.647177">178.647177</td>
+      <td data-order="59.093844">59.093844</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064428630.html" target="_blank">300534064428630</a></td>
+      <td data-order="-156.669">-156.669</td>
+      <td data-order="71.341">71.341</td>
+      <td data-order="-156.669">-156.669</td>
+      <td data-order="71.341">71.341</td>
+      <td data-order="76315.838">76315.838</td>
+      <td data-order="91465.813">91465.813</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="6.921689">6.921689</td>
+      <td data-order="6.921689">6.921689</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="111.851833">111.851833</td>
+      <td data-order="68.148167">68.148167</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064484380.html" target="_blank">300534064484380</a></td>
+      <td data-order="-71.907">-71.907</td>
+      <td data-order="85.182">85.182</td>
+      <td data-order="-71.660">-71.660</td>
+      <td data-order="85.163">85.163</td>
+      <td data-order="5929.764">5929.764</td>
+      <td data-order="22522.214">22522.214</td>
+      <td data-order="3.145344">3.145344</td>
+      <td data-order="3.801673">3.801673</td>
+      <td data-order="0.656329">0.656329</td>
+      <td data-order="132.304471">132.304471</td>
+      <td data-order="142.121572">142.121572</td>
+      <td data-order="9.817101">9.817101</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064723490.html" target="_blank">300534064723490</a></td>
+      <td data-order="-103.982">-103.982</td>
+      <td data-order="81.639">81.639</td>
+      <td data-order="-103.921">-103.921</td>
+      <td data-order="81.614">81.614</td>
+      <td data-order="3893.152">3893.152</td>
+      <td data-order="21225.114">21225.114</td>
+      <td data-order="2.962799">2.962799</td>
+      <td data-order="5.418986">5.418986</td>
+      <td data-order="2.456186">2.456186</td>
+      <td data-order="160.405785">160.405785</td>
+      <td data-order="182.745716">182.745716</td>
+      <td data-order="22.339931">22.339931</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064921820.html" target="_blank">300534064921820</a></td>
+      <td data-order="-17.240">-17.240</td>
+      <td data-order="85.443">85.443</td>
+      <td data-order="-16.701">-16.701</td>
+      <td data-order="85.338">85.338</td>
+      <td data-order="5935.479">5935.479</td>
+      <td data-order="21516.105">21516.105</td>
+      <td data-order="12.685763">12.685763</td>
+      <td data-order="11.420447">11.420447</td>
+      <td data-order="1.265316">1.265316</td>
+      <td data-order="157.312421">157.312421</td>
+      <td data-order="153.102945">153.102945</td>
+      <td data-order="4.209476">4.209476</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064921850.html" target="_blank">300534064921850</a></td>
+      <td data-order="-35.478">-35.478</td>
+      <td data-order="85.201">85.201</td>
+      <td data-order="-34.957">-34.957</td>
+      <td data-order="85.163">85.163</td>
+      <td data-order="7490.514">7490.514</td>
+      <td data-order="19837.611">19837.611</td>
+      <td data-order="6.472984">6.472984</td>
+      <td data-order="6.424656">6.424656</td>
+      <td data-order="0.048329">0.048329</td>
+      <td data-order="130.709522">130.709522</td>
+      <td data-order="112.705971">112.705971</td>
+      <td data-order="18.003551">18.003551</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064926830.html" target="_blank">300534064926830</a></td>
+      <td data-order="-99.990">-99.990</td>
+      <td data-order="83.704">83.704</td>
+      <td data-order="-99.712">-99.712</td>
+      <td data-order="83.671">83.671</td>
+      <td data-order="3578.635">3578.635</td>
+      <td data-order="21213.544">21213.544</td>
+      <td data-order="5.023691">5.023691</td>
+      <td data-order="6.560134">6.560134</td>
+      <td data-order="1.536442">1.536442</td>
+      <td data-order="137.051901">137.051901</td>
+      <td data-order="157.356105">157.356105</td>
+      <td data-order="20.304203">20.304203</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064929840.html" target="_blank">300534064929840</a></td>
+      <td data-order="-36.364">-36.364</td>
+      <td data-order="84.601">84.601</td>
+      <td data-order="-36.200">-36.200</td>
+      <td data-order="84.573">84.573</td>
+      <td data-order="6415.250">6415.250</td>
+      <td data-order="20863.987">20863.987</td>
+      <td data-order="3.572791">3.572791</td>
+      <td data-order="1.890179">1.890179</td>
+      <td data-order="1.682612">1.682612</td>
+      <td data-order="150.994977">150.994977</td>
+      <td data-order="101.655208">101.655208</td>
+      <td data-order="49.339769">49.339769</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065160760.html" target="_blank">300534065160760</a></td>
+      <td data-order="144.312">144.312</td>
+      <td data-order="78.150">78.150</td>
+      <td data-order="144.065">144.065</td>
+      <td data-order="78.133">78.133</td>
+      <td data-order="463492.865">463492.865</td>
+      <td data-order="481719.246">481719.246</td>
+      <td data-order="5.977793">5.977793</td>
+      <td data-order="12.757379">12.757379</td>
+      <td data-order="6.779585">6.779585</td>
+      <td data-order="251.608722">251.608722</td>
+      <td data-order="7.399905">7.399905</td>
+      <td data-order="244.208817">244.208817</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065160770.html" target="_blank">300534065160770</a></td>
+      <td data-order="155.806">155.806</td>
+      <td data-order="77.215">77.215</td>
+      <td data-order="156.002">156.002</td>
+      <td data-order="77.202">77.202</td>
+      <td data-order="258156.525">258156.525</td>
+      <td data-order="290595.425">290595.425</td>
+      <td data-order="5.058822">5.058822</td>
+      <td data-order="12.267650">12.267650</td>
+      <td data-order="7.208828">7.208828</td>
+      <td data-order="106.575992">106.575992</td>
+      <td data-order="7.786589">7.786589</td>
+      <td data-order="98.789404">98.789404</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065160780.html" target="_blank">300534065160780</a></td>
+      <td data-order="170.099">170.099</td>
+      <td data-order="76.332">76.332</td>
+      <td data-order="170.120">170.120</td>
+      <td data-order="76.410">76.410</td>
+      <td data-order="199902.028">199902.028</td>
+      <td data-order="211012.679">211012.679</td>
+      <td data-order="8.724760">8.724760</td>
+      <td data-order="13.225792">13.225792</td>
+      <td data-order="4.501032">4.501032</td>
+      <td data-order="3.621127">3.621127</td>
+      <td data-order="7.863201">7.863201</td>
+      <td data-order="4.242074">4.242074</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065160910.html" target="_blank">300534065160910</a></td>
+      <td data-order="172.138">172.138</td>
+      <td data-order="77.121">77.121</td>
+      <td data-order="172.244">172.244</td>
+      <td data-order="77.211">77.211</td>
+      <td data-order="101627.024">101627.024</td>
+      <td data-order="115038.160">115038.160</td>
+      <td data-order="10.385812">10.385812</td>
+      <td data-order="11.851875">11.851875</td>
+      <td data-order="1.466063">1.466063</td>
+      <td data-order="14.613925">14.613925</td>
+      <td data-order="35.542215">35.542215</td>
+      <td data-order="20.928290">20.928290</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065162740.html" target="_blank">300534065162740</a></td>
+      <td data-order="174.508">174.508</td>
+      <td data-order="72.599">72.599</td>
+      <td data-order="174.512">174.512</td>
+      <td data-order="72.688">72.688</td>
+      <td data-order="173657.950">173657.950</td>
+      <td data-order="219050.276">219050.276</td>
+      <td data-order="9.932721">9.932721</td>
+      <td data-order="10.224776">10.224776</td>
+      <td data-order="0.292054">0.292054</td>
+      <td data-order="0.766697">0.766697</td>
+      <td data-order="180.633980">180.633980</td>
+      <td data-order="179.867283">179.867283</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065162880.html" target="_blank">300534065162880</a></td>
+      <td data-order="-153.462">-153.462</td>
+      <td data-order="75.508">75.508</td>
+      <td data-order="-153.469">-153.469</td>
+      <td data-order="75.633">75.633</td>
+      <td data-order="53367.801">53367.801</td>
+      <td data-order="68084.362">68084.362</td>
+      <td data-order="13.954347">13.954347</td>
+      <td data-order="9.359704">9.359704</td>
+      <td data-order="4.594643">4.594643</td>
+      <td data-order="359.203569">359.203569</td>
+      <td data-order="269.234873">269.234873</td>
+      <td data-order="89.968696">89.968696</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065163770.html" target="_blank">300534065163770</a></td>
+      <td data-order="-158.396">-158.396</td>
+      <td data-order="80.791">80.791</td>
+      <td data-order="-158.023">-158.023</td>
+      <td data-order="80.926">80.926</td>
+      <td data-order="3445.634">3445.634</td>
+      <td data-order="20883.815">20883.815</td>
+      <td data-order="16.463638">16.463638</td>
+      <td data-order="15.338929">15.338929</td>
+      <td data-order="1.124709">1.124709</td>
+      <td data-order="23.519127">23.519127</td>
+      <td data-order="60.327169">60.327169</td>
+      <td data-order="36.808042">36.808042</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065163920.html" target="_blank">300534065163920</a></td>
+      <td data-order="-143.873">-143.873</td>
+      <td data-order="79.629">79.629</td>
+      <td data-order="-143.529">-143.529</td>
+      <td data-order="79.707">79.707</td>
+      <td data-order="20621.780">20621.780</td>
+      <td data-order="37294.687">37294.687</td>
+      <td data-order="11.105366">11.105366</td>
+      <td data-order="8.972782">8.972782</td>
+      <td data-order="2.132584">2.132584</td>
+      <td data-order="38.180455">38.180455</td>
+      <td data-order="25.577084">25.577084</td>
+      <td data-order="12.603370">12.603370</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065164770.html" target="_blank">300534065164770</a></td>
+      <td data-order="-165.475">-165.475</td>
+      <td data-order="79.766">79.766</td>
+      <td data-order="-165.251">-165.251</td>
+      <td data-order="79.911">79.911</td>
+      <td data-order="5320.558">5320.558</td>
+      <td data-order="20614.061">20614.061</td>
+      <td data-order="16.781293">16.781293</td>
+      <td data-order="15.335542">15.335542</td>
+      <td data-order="1.445750">1.445750</td>
+      <td data-order="15.138156">15.138156</td>
+      <td data-order="23.154941">23.154941</td>
+      <td data-order="8.016786">8.016786</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065164870.html" target="_blank">300534065164870</a></td>
+      <td data-order="-140.060">-140.060</td>
+      <td data-order="76.024">76.024</td>
+      <td data-order="-140.062">-140.062</td>
+      <td data-order="76.054">76.054</td>
+      <td data-order="4495.591">4495.591</td>
+      <td data-order="23871.769">23871.769</td>
+      <td data-order="3.349282">3.349282</td>
+      <td data-order="2.267619">2.267619</td>
+      <td data-order="1.081663">1.081663</td>
+      <td data-order="359.079138">359.079138</td>
+      <td data-order="335.172004">335.172004</td>
+      <td data-order="23.907134">23.907134</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065164900.html" target="_blank">300534065164900</a></td>
+      <td data-order="-156.202">-156.202</td>
+      <td data-order="74.267">74.267</td>
+      <td data-order="-156.272">-156.272</td>
+      <td data-order="74.376">74.376</td>
+      <td data-order="5083.330">5083.330</td>
+      <td data-order="27460.901">27460.901</td>
+      <td data-order="12.347686">12.347686</td>
+      <td data-order="13.285319">13.285319</td>
+      <td data-order="0.937633">0.937633</td>
+      <td data-order="350.183435">350.183435</td>
+      <td data-order="326.444985">326.444985</td>
+      <td data-order="23.738450">23.738450</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065165780.html" target="_blank">300534065165780</a></td>
+      <td data-order="-151.278">-151.278</td>
+      <td data-order="73.847">73.847</td>
+      <td data-order="-151.389">-151.389</td>
+      <td data-order="73.966">73.966</td>
+      <td data-order="3286.118">3286.118</td>
+      <td data-order="21716.516">21716.516</td>
+      <td data-order="13.718504">13.718504</td>
+      <td data-order="13.775402">13.775402</td>
+      <td data-order="0.056898">0.056898</td>
+      <td data-order="345.548683">345.548683</td>
+      <td data-order="339.124843">339.124843</td>
+      <td data-order="6.423841">6.423841</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065165900.html" target="_blank">300534065165900</a></td>
+      <td data-order="-170.811">-170.811</td>
+      <td data-order="74.576">74.576</td>
+      <td data-order="-170.756">-170.756</td>
+      <td data-order="74.675">74.675</td>
+      <td data-order="6207.774">6207.774</td>
+      <td data-order="21077.214">21077.214</td>
+      <td data-order="11.169183">11.169183</td>
+      <td data-order="11.451424">11.451424</td>
+      <td data-order="0.282241">0.282241</td>
+      <td data-order="8.356406">8.356406</td>
+      <td data-order="289.957146">289.957146</td>
+      <td data-order="281.600740">281.600740</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065166870.html" target="_blank">300534065166870</a></td>
+      <td data-order="179.661">179.661</td>
+      <td data-order="80.168">80.168</td>
+      <td data-order="179.815">179.815</td>
+      <td data-order="80.324">80.324</td>
+      <td data-order="6597.545">6597.545</td>
+      <td data-order="34546.049">34546.049</td>
+      <td data-order="17.661223">17.661223</td>
+      <td data-order="20.053506">20.053506</td>
+      <td data-order="2.392284">2.392284</td>
+      <td data-order="9.420556">9.420556</td>
+      <td data-order="6.516110">6.516110</td>
+      <td data-order="2.904446">2.904446</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065167750.html" target="_blank">300534065167750</a></td>
+      <td data-order="178.513">178.513</td>
+      <td data-order="74.553">74.553</td>
+      <td data-order="178.380">178.380</td>
+      <td data-order="74.647">74.647</td>
+      <td data-order="65162.116">65162.116</td>
+      <td data-order="107707.923">107707.923</td>
+      <td data-order="11.208555">11.208555</td>
+      <td data-order="12.469288">12.469288</td>
+      <td data-order="1.260732">1.260732</td>
+      <td data-order="339.462247">339.462247</td>
+      <td data-order="333.973659">333.973659</td>
+      <td data-order="5.488589">5.488589</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065168780.html" target="_blank">300534065168780</a></td>
+      <td data-order="-160.497">-160.497</td>
+      <td data-order="72.332">72.332</td>
+      <td data-order="-160.424">-160.424</td>
+      <td data-order="72.342">72.342</td>
+      <td data-order="3096.746">3096.746</td>
+      <td data-order="20513.225">20513.225</td>
+      <td data-order="2.713290">2.713290</td>
+      <td data-order="2.906201">2.906201</td>
+      <td data-order="0.192911">0.192911</td>
+      <td data-order="65.680445">65.680445</td>
+      <td data-order="32.105699">32.105699</td>
+      <td data-order="33.574746">33.574746</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065168790.html" target="_blank">300534065168790</a></td>
+      <td data-order="-160.223">-160.223</td>
+      <td data-order="72.464">72.464</td>
+      <td data-order="-160.183">-160.183</td>
+      <td data-order="72.480">72.480</td>
+      <td data-order="3111.085">3111.085</td>
+      <td data-order="20173.913">20173.913</td>
+      <td data-order="2.235469">2.235469</td>
+      <td data-order="3.061407">3.061407</td>
+      <td data-order="0.825938">0.825938</td>
+      <td data-order="36.974929">36.974929</td>
+      <td data-order="28.873977">28.873977</td>
+      <td data-order="8.100952">8.100952</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065168860.html" target="_blank">300534065168860</a></td>
+      <td data-order="-170.808">-170.808</td>
+      <td data-order="74.601">74.601</td>
+      <td data-order="-170.748">-170.748</td>
+      <td data-order="74.706">74.706</td>
+      <td data-order="4497.350">4497.350</td>
+      <td data-order="20832.383">20832.383</td>
+      <td data-order="11.852954">11.852954</td>
+      <td data-order="12.153178">12.153178</td>
+      <td data-order="0.300224">0.300224</td>
+      <td data-order="8.574851">8.574851</td>
+      <td data-order="327.377724">327.377724</td>
+      <td data-order="318.802872">318.802872</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065281030.html" target="_blank">300534065281030</a></td>
+      <td data-order="-3.047">-3.047</td>
+      <td data-order="80.856">80.856</td>
+      <td data-order="-2.905">-2.905</td>
+      <td data-order="80.754">80.754</td>
+      <td data-order="7608.066">7608.066</td>
+      <td data-order="20110.733">20110.733</td>
+      <td data-order="11.668361">11.668361</td>
+      <td data-order="13.349809">13.349809</td>
+      <td data-order="1.681448">1.681448</td>
+      <td data-order="167.386038">167.386038</td>
+      <td data-order="145.032603">145.032603</td>
+      <td data-order="22.353434">22.353434</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065282020.html" target="_blank">300534065282020</a></td>
+      <td data-order="-10.015">-10.015</td>
+      <td data-order="84.032">84.032</td>
+      <td data-order="-9.877">-9.877</td>
+      <td data-order="83.922">83.922</td>
+      <td data-order="2511.468">2511.468</td>
+      <td data-order="26000.329">26000.329</td>
+      <td data-order="12.390958">12.390958</td>
+      <td data-order="9.454506">9.454506</td>
+      <td data-order="2.936452">2.936452</td>
+      <td data-order="172.431724">172.431724</td>
+      <td data-order="144.762221">144.762221</td>
+      <td data-order="27.669504">27.669504</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065283030.html" target="_blank">300534065283030</a></td>
+      <td data-order="-104.046">-104.046</td>
+      <td data-order="85.993">85.993</td>
+      <td data-order="-103.065">-103.065</td>
+      <td data-order="85.978">85.978</td>
+      <td data-order="5876.156">5876.156</td>
+      <td data-order="20719.034">20719.034</td>
+      <td data-order="7.851588">7.851588</td>
+      <td data-order="4.025134">4.025134</td>
+      <td data-order="3.826455">3.826455</td>
+      <td data-order="101.830411">101.830411</td>
+      <td data-order="102.444796">102.444796</td>
+      <td data-order="0.614385">0.614385</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065285030.html" target="_blank">300534065285030</a></td>
+      <td data-order="-109.515">-109.515</td>
+      <td data-order="84.624">84.624</td>
+      <td data-order="-108.816">-108.816</td>
+      <td data-order="84.613">84.613</td>
+      <td data-order="7538.876">7538.876</td>
+      <td data-order="21035.408">21035.408</td>
+      <td data-order="7.424406">7.424406</td>
+      <td data-order="7.593694">7.593694</td>
+      <td data-order="0.169288">0.169288</td>
+      <td data-order="99.176464">99.176464</td>
+      <td data-order="112.711974">112.711974</td>
+      <td data-order="13.535510">13.535510</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065286030.html" target="_blank">300534065286030</a></td>
+      <td data-order="-114.414">-114.414</td>
+      <td data-order="84.528">84.528</td>
+      <td data-order="-113.633">-113.633</td>
+      <td data-order="84.522">84.522</td>
+      <td data-order="27346.068">27346.068</td>
+      <td data-order="38486.751">38486.751</td>
+      <td data-order="8.349637">8.349637</td>
+      <td data-order="8.124032">8.124032</td>
+      <td data-order="0.225605">0.225605</td>
+      <td data-order="94.214412">94.214412</td>
+      <td data-order="106.664251">106.664251</td>
+      <td data-order="12.449839">12.449839</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065287020.html" target="_blank">300534065287020</a></td>
+      <td data-order="-67.117">-67.117</td>
+      <td data-order="85.346">85.346</td>
+      <td data-order="-66.825">-66.825</td>
+      <td data-order="85.332">85.332</td>
+      <td data-order="4091.352">4091.352</td>
+      <td data-order="21216.397">21216.397</td>
+      <td data-order="3.077087">3.077087</td>
+      <td data-order="2.826636">2.826636</td>
+      <td data-order="0.250451">0.250451</td>
+      <td data-order="120.394831">120.394831</td>
+      <td data-order="134.526163">134.526163</td>
+      <td data-order="14.131332">14.131332</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065287030.html" target="_blank">300534065287030</a></td>
+      <td data-order="-67.777">-67.777</td>
+      <td data-order="85.067">85.067</td>
+      <td data-order="-67.556">-67.556</td>
+      <td data-order="85.055">85.055</td>
+      <td data-order="1060.548">1060.548</td>
+      <td data-order="18737.825">18737.825</td>
+      <td data-order="2.512461">2.512461</td>
+      <td data-order="2.772093">2.772093</td>
+      <td data-order="0.259632">0.259632</td>
+      <td data-order="122.127487">122.127487</td>
+      <td data-order="141.449164">141.449164</td>
+      <td data-order="19.321677">19.321677</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065825770.html" target="_blank">300534065825770</a></td>
+      <td data-order="-93.798">-93.798</td>
+      <td data-order="85.418">85.418</td>
+      <td data-order="-93.212">-93.212</td>
+      <td data-order="85.406">85.406</td>
+      <td data-order="6402.996">6402.996</td>
+      <td data-order="20513.860">20513.860</td>
+      <td data-order="5.404255">5.404255</td>
+      <td data-order="4.773644">4.773644</td>
+      <td data-order="0.630611">0.630611</td>
+      <td data-order="104.066787">104.066787</td>
+      <td data-order="120.808964">120.808964</td>
+      <td data-order="16.742177">16.742177</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534066610750.html" target="_blank">300534066610750</a></td>
+      <td data-order="-111.386">-111.386</td>
+      <td data-order="85.683">85.683</td>
+      <td data-order="-110.355">-110.355</td>
+      <td data-order="85.679">85.679</td>
+      <td data-order="6675.169">6675.169</td>
+      <td data-order="21149.396">21149.396</td>
+      <td data-order="8.683583">8.683583</td>
+      <td data-order="5.971585">5.971585</td>
+      <td data-order="2.711998">2.711998</td>
+      <td data-order="92.434882">92.434882</td>
+      <td data-order="71.079347">71.079347</td>
+      <td data-order="21.355535">21.355535</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534066611760.html" target="_blank">300534066611760</a></td>
+      <td data-order="-117.816">-117.816</td>
+      <td data-order="83.595">83.595</td>
+      <td data-order="-117.252">-117.252</td>
+      <td data-order="83.598">83.598</td>
+      <td data-order="5313.776">5313.776</td>
+      <td data-order="32304.115">32304.115</td>
+      <td data-order="7.033516">7.033516</td>
+      <td data-order="4.933109">4.933109</td>
+      <td data-order="2.100407">2.100407</td>
+      <td data-order="86.989489">86.989489</td>
+      <td data-order="90.693794">90.693794</td>
+      <td data-order="3.704306">3.704306</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534067128440.html" target="_blank">300534067128440</a></td>
+      <td data-order="-142.354">-142.354</td>
+      <td data-order="70.739">70.739</td>
+      <td data-order="-142.563">-142.563</td>
+      <td data-order="70.789">70.789</td>
+      <td data-order="7087.556">7087.556</td>
+      <td data-order="23623.753">23623.753</td>
+      <td data-order="9.498815">9.498815</td>
+      <td data-order="7.081827">7.081827</td>
+      <td data-order="2.416987">2.416987</td>
+      <td data-order="306.063664">306.063664</td>
+      <td data-order="300.025443">300.025443</td>
+      <td data-order="6.038222">6.038222</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534067129080.html" target="_blank">300534067129080</a></td>
+      <td data-order="-162.924">-162.924</td>
+      <td data-order="73.319">73.319</td>
+      <td data-order="-162.974">-162.974</td>
+      <td data-order="73.369">73.369</td>
+      <td data-order="8380.579">8380.579</td>
+      <td data-order="31182.621">31182.621</td>
+      <td data-order="5.804996">5.804996</td>
+      <td data-order="12.174137">12.174137</td>
+      <td data-order="6.369141">6.369141</td>
+      <td data-order="344.021928">344.021928</td>
+      <td data-order="241.306100">241.306100</td>
+      <td data-order="102.715828">102.715828</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534067618250.html" target="_blank">300534067618250</a></td>
+      <td data-order="-176.817">-176.817</td>
+      <td data-order="72.906">72.906</td>
+      <td data-order="-176.819">-176.819</td>
+      <td data-order="72.989">72.989</td>
+      <td data-order="3743.868">3743.868</td>
+      <td data-order="28739.189">28739.189</td>
+      <td data-order="9.262778">9.262778</td>
+      <td data-order="18.809291">18.809291</td>
+      <td data-order="9.546513">9.546513</td>
+      <td data-order="359.595864">359.595864</td>
+      <td data-order="223.906561">223.906561</td>
+      <td data-order="135.689303">135.689303</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534067810190.html" target="_blank">300534067810190</a></td>
+      <td data-order="-142.775">-142.775</td>
+      <td data-order="75.576">75.576</td>
+      <td data-order="-142.763">-142.763</td>
+      <td data-order="75.632">75.632</td>
+      <td data-order="6217.000">6217.000</td>
+      <td data-order="22411.051">22411.051</td>
+      <td data-order="6.259829">6.259829</td>
+      <td data-order="4.894937">4.894937</td>
+      <td data-order="1.364892">1.364892</td>
+      <td data-order="3.045075">3.045075</td>
+      <td data-order="342.841333">342.841333</td>
+      <td data-order="339.796258">339.796258</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534067810200.html" target="_blank">300534067810200</a></td>
+      <td data-order="-135.800">-135.800</td>
+      <td data-order="74.514">74.514</td>
+      <td data-order="-135.911">-135.911</td>
+      <td data-order="74.501">74.501</td>
+      <td data-order="119042.141">119042.141</td>
+      <td data-order="144981.414">144981.414</td>
+      <td data-order="3.614856">3.614856</td>
+      <td data-order="6.418934">6.418934</td>
+      <td data-order="2.804078">2.804078</td>
+      <td data-order="246.388254">246.388254</td>
+      <td data-order="237.368460">237.368460</td>
+      <td data-order="9.019793">9.019793</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534067810230.html" target="_blank">300534067810230</a></td>
+      <td data-order="-163.044">-163.044</td>
+      <td data-order="73.039">73.039</td>
+      <td data-order="-163.083">-163.083</td>
+      <td data-order="73.071">73.071</td>
+      <td data-order="10703.498">10703.498</td>
+      <td data-order="23871.027">23871.027</td>
+      <td data-order="3.789984">3.789984</td>
+      <td data-order="6.316935">6.316935</td>
+      <td data-order="2.526951">2.526951</td>
+      <td data-order="340.452808">340.452808</td>
+      <td data-order="175.572851">175.572851</td>
+      <td data-order="164.879957">164.879957</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534067814150.html" target="_blank">300534067814150</a></td>
+      <td data-order="-115.803">-115.803</td>
+      <td data-order="77.817">77.817</td>
+      <td data-order="-115.803">-115.803</td>
+      <td data-order="77.817">77.817</td>
+      <td data-order="70814.291">70814.291</td>
+      <td data-order="98483.118">98483.118</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="3.223853">3.223853</td>
+      <td data-order="3.223853">3.223853</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="205.603640">205.603640</td>
+      <td data-order="25.603640">25.603640</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534067815570.html" target="_blank">300534067815570</a></td>
+      <td data-order="-131.999">-131.999</td>
+      <td data-order="71.491">71.491</td>
+      <td data-order="-132.173">-132.173</td>
+      <td data-order="71.468">71.468</td>
+      <td data-order="608.706">608.706</td>
+      <td data-order="18283.858">18283.858</td>
+      <td data-order="6.683577">6.683577</td>
+      <td data-order="5.853150">5.853150</td>
+      <td data-order="0.830427">0.830427</td>
+      <td data-order="247.502242">247.502242</td>
+      <td data-order="235.654858">235.654858</td>
+      <td data-order="11.847384">11.847384</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534067819150.html" target="_blank">300534067819150</a></td>
+      <td data-order="-144.473">-144.473</td>
+      <td data-order="71.868">71.868</td>
+      <td data-order="-144.692">-144.692</td>
+      <td data-order="71.926">71.926</td>
+      <td data-order="6199.882">6199.882</td>
+      <td data-order="20166.912">20166.912</td>
+      <td data-order="9.980896">9.980896</td>
+      <td data-order="8.771235">8.771235</td>
+      <td data-order="1.209661">1.209661</td>
+      <td data-order="310.527481">310.527481</td>
+      <td data-order="309.090491">309.090491</td>
+      <td data-order="1.436990">1.436990</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/301434060045130.html" target="_blank">301434060045130</a></td>
+      <td data-order="-164.270">-164.270</td>
+      <td data-order="81.615">81.615</td>
+      <td data-order="-163.945">-163.945</td>
+      <td data-order="81.742">81.742</td>
+      <td data-order="1125.190">1125.190</td>
+      <td data-order="18502.525">18502.525</td>
+      <td data-order="15.123774">15.123774</td>
+      <td data-order="15.879878">15.879878</td>
+      <td data-order="0.756104">0.756104</td>
+      <td data-order="20.164798">20.164798</td>
+      <td data-order="19.698876">19.698876</td>
+      <td data-order="0.465923">0.465923</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/301434060049130.html" target="_blank">301434060049130</a></td>
+      <td data-order="-56.277">-56.277</td>
+      <td data-order="82.911">82.911</td>
+      <td data-order="-56.277">-56.277</td>
+      <td data-order="82.911">82.911</td>
+      <td data-order="6290.397">6290.397</td>
+      <td data-order="23543.438">23543.438</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="1.307202">1.307202</td>
+      <td data-order="1.307202">1.307202</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="56.874275">56.874275</td>
+      <td data-order="123.125725">123.125725</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/900106.html" target="_blank">900106</a></td>
+      <td data-order="-111.384">-111.384</td>
+      <td data-order="85.683">85.683</td>
+      <td data-order="-110.323">-110.323</td>
+      <td data-order="85.680">85.680</td>
+      <td data-order="6691.497">6691.497</td>
+      <td data-order="21159.530">21159.530</td>
+      <td data-order="8.929674">8.929674</td>
+      <td data-order="5.971585">5.971585</td>
+      <td data-order="2.958089">2.958089</td>
+      <td data-order="91.621294">91.621294</td>
+      <td data-order="71.079347">71.079347</td>
+      <td data-order="20.541946">20.541946</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/900115.html" target="_blank">900115</a></td>
+      <td data-order="-38.627">-38.627</td>
+      <td data-order="84.407">84.407</td>
+      <td data-order="-38.617">-38.617</td>
+      <td data-order="84.406">84.406</td>
+      <td data-order="3923.104">3923.104</td>
+      <td data-order="21335.089">21335.089</td>
+      <td data-order="0.155964">0.155964</td>
+      <td data-order="1.118877">1.118877</td>
+      <td data-order="0.962913">0.962913</td>
+      <td data-order="135.727229">135.727229</td>
+      <td data-order="279.727123">279.727123</td>
+      <td data-order="143.999894">143.999894</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/900127.html" target="_blank">900127</a></td>
+      <td data-order="-93.349">-93.349</td>
+      <td data-order="81.955">81.955</td>
+      <td data-order="-93.404">-93.404</td>
+      <td data-order="81.940">81.940</td>
+      <td data-order="29024.849">29024.849</td>
+      <td data-order="51580.847">51580.847</td>
+      <td data-order="1.883165">1.883165</td>
+      <td data-order="3.734214">3.734214</td>
+      <td data-order="1.851049">1.851049</td>
+      <td data-order="207.216622">207.216622</td>
+      <td data-order="198.970751">198.970751</td>
+      <td data-order="8.245870">8.245870</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/900131.html" target="_blank">900131</a></td>
+      <td data-order="-114.859">-114.859</td>
+      <td data-order="81.009">81.009</td>
+      <td data-order="-114.749">-114.749</td>
+      <td data-order="81.007">81.007</td>
+      <td data-order="51607.023">51607.023</td>
+      <td data-order="68323.673">68323.673</td>
+      <td data-order="1.933098">1.933098</td>
+      <td data-order="3.644799">3.644799</td>
+      <td data-order="1.711701">1.711701</td>
+      <td data-order="96.579927">96.579927</td>
+      <td data-order="196.030254">196.030254</td>
+      <td data-order="99.450326">99.450326</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/900133.html" target="_blank">900133</a></td>
+      <td data-order="-117.817">-117.817</td>
+      <td data-order="83.595">83.595</td>
+      <td data-order="-117.233">-117.233</td>
+      <td data-order="83.599">83.599</td>
+      <td data-order="5312.573">5312.573</td>
+      <td data-order="32296.664">32296.664</td>
+      <td data-order="7.287801">7.287801</td>
+      <td data-order="4.933109">4.933109</td>
+      <td data-order="2.354691">2.354691</td>
+      <td data-order="86.195609">86.195609</td>
+      <td data-order="90.693794">90.693794</td>
+      <td data-order="4.498186">4.498186</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/900137.html" target="_blank">900137</a></td>
+      <td data-order="174.503">174.503</td>
+      <td data-order="74.946">74.946</td>
+      <td data-order="174.367">174.367</td>
+      <td data-order="75.027">75.027</td>
+      <td data-order="166335.869">166335.869</td>
+      <td data-order="210638.451">210638.451</td>
+      <td data-order="9.859936">9.859936</td>
+      <td data-order="12.455838">12.455838</td>
+      <td data-order="2.595902">2.595902</td>
+      <td data-order="336.549921">336.549921</td>
+      <td data-order="294.635011">294.635011</td>
+      <td data-order="41.914910">41.914910</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/900138.html" target="_blank">900138</a></td>
+      <td data-order="-135.460">-135.460</td>
+      <td data-order="72.475">72.475</td>
+      <td data-order="-135.705">-135.705</td>
+      <td data-order="72.469">72.469</td>
+      <td data-order="6886.351">6886.351</td>
+      <td data-order="20613.186">20613.186</td>
+      <td data-order="8.266212">8.266212</td>
+      <td data-order="6.845926">6.845926</td>
+      <td data-order="1.420286">1.420286</td>
+      <td data-order="265.470867">265.470867</td>
+      <td data-order="260.100573">260.100573</td>
+      <td data-order="5.370295">5.370295</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/900139.html" target="_blank">900139</a></td>
+      <td data-order="-103.774">-103.774</td>
+      <td data-order="83.524">83.524</td>
+      <td data-order="-103.437">-103.437</td>
+      <td data-order="83.498">83.498</td>
+      <td data-order="7400.897">7400.897</td>
+      <td data-order="19834.221">19834.221</td>
+      <td data-order="5.150259">5.150259</td>
+      <td data-order="6.198382">6.198382</td>
+      <td data-order="1.048123">1.048123</td>
+      <td data-order="124.150774">124.150774</td>
+      <td data-order="153.221671">153.221671</td>
+      <td data-order="29.070897">29.070897</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/900141.html" target="_blank">900141</a></td>
+      <td data-order="161.603">161.603</td>
+      <td data-order="73.140">73.140</td>
+      <td data-order="161.463">161.463</td>
+      <td data-order="73.122">73.122</td>
+      <td data-order="63127.607">63127.607</td>
+      <td data-order="83696.915">83696.915</td>
+      <td data-order="4.961237">4.961237</td>
+      <td data-order="3.191415">3.191415</td>
+      <td data-order="1.769821">1.769821</td>
+      <td data-order="246.182440">246.182440</td>
+      <td data-order="260.041690">260.041690</td>
+      <td data-order="13.859250">13.859250</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/900142.html" target="_blank">900142</a></td>
+      <td data-order="-145.671">-145.671</td>
+      <td data-order="76.841">76.841</td>
+      <td data-order="-145.559">-145.559</td>
+      <td data-order="76.931">76.931</td>
+      <td data-order="3710.761">3710.761</td>
+      <td data-order="25004.090">25004.090</td>
+      <td data-order="10.440306">10.440306</td>
+      <td data-order="7.320912">7.320912</td>
+      <td data-order="3.119394">3.119394</td>
+      <td data-order="15.717750">15.717750</td>
+      <td data-order="3.072397">3.072397</td>
+      <td data-order="12.645354">12.645354</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/902007.html" target="_blank">902007</a></td>
+      <td data-order="-110.846">-110.846</td>
+      <td data-order="81.998">81.998</td>
+      <td data-order="-110.679">-110.679</td>
+      <td data-order="81.988">81.988</td>
+      <td data-order="1841.037">1841.037</td>
+      <td data-order="19478.826">19478.826</td>
+      <td data-order="2.827899">2.827899</td>
+      <td data-order="5.160934">5.160934</td>
+      <td data-order="2.333035">2.333035</td>
+      <td data-order="113.176656">113.176656</td>
+      <td data-order="175.504539">175.504539</td>
+      <td data-order="62.327883">62.327883</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/902009.html" target="_blank">902009</a></td>
+      <td data-order="-103.774">-103.774</td>
+      <td data-order="83.524">83.524</td>
+      <td data-order="-103.436">-103.436</td>
+      <td data-order="83.498">83.498</td>
+      <td data-order="7400.897">7400.897</td>
+      <td data-order="19834.221">19834.221</td>
+      <td data-order="5.160689">5.160689</td>
+      <td data-order="6.198382">6.198382</td>
+      <td data-order="1.037694">1.037694</td>
+      <td data-order="124.071269">124.071269</td>
+      <td data-order="153.221671">153.221671</td>
+      <td data-order="29.150402">29.150402</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/902013.html" target="_blank">902013</a></td>
+      <td data-order="-161.411">-161.411</td>
+      <td data-order="75.351">75.351</td>
+      <td data-order="-161.358">-161.358</td>
+      <td data-order="75.445">75.445</td>
+      <td data-order="4160.049">4160.049</td>
+      <td data-order="21801.323">21801.323</td>
+      <td data-order="10.598050">10.598050</td>
+      <td data-order="12.202273">12.202273</td>
+      <td data-order="1.604224">1.604224</td>
+      <td data-order="8.067791">8.067791</td>
+      <td data-order="292.387249">292.387249</td>
+      <td data-order="284.319459">284.319459</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/902014.html" target="_blank">902014</a></td>
+      <td data-order="-147.476">-147.476</td>
+      <td data-order="74.622">74.622</td>
+      <td data-order="-147.539">-147.539</td>
+      <td data-order="74.721">74.721</td>
+      <td data-order="25089.427">25089.427</td>
+      <td data-order="43481.579">43481.579</td>
+      <td data-order="11.205303">11.205303</td>
+      <td data-order="10.305300">10.305300</td>
+      <td data-order="0.900002">0.900002</td>
+      <td data-order="350.476817">350.476817</td>
+      <td data-order="266.781787">266.781787</td>
+      <td data-order="83.695030">83.695030</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/902015.html" target="_blank">902015</a></td>
+      <td data-order="-149.206">-149.206</td>
+      <td data-order="75.272">75.272</td>
+      <td data-order="-149.209">-149.209</td>
+      <td data-order="75.383">75.383</td>
+      <td data-order="1338.254">1338.254</td>
+      <td data-order="18725.736">18725.736</td>
+      <td data-order="12.390285">12.390285</td>
+      <td data-order="11.662607">11.662607</td>
+      <td data-order="0.727678">0.727678</td>
+      <td data-order="359.609054">359.609054</td>
+      <td data-order="346.360862">346.360862</td>
+      <td data-order="13.248192">13.248192</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300434065884730.html" target="_blank">300434065884730</a></td>
+      <td data-order="-115.782">-115.782</td>
+      <td data-order="77.812">77.812</td>
+      <td data-order="-115.782">-115.782</td>
+      <td data-order="77.812">77.812</td>
+      <td data-order="71480.334">71480.334</td>
+      <td data-order="99133.907">99133.907</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="3.223853">3.223853</td>
+      <td data-order="3.223853">3.223853</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="205.603640">205.603640</td>
+      <td data-order="25.603640">25.603640</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065167910.html" target="_blank">300534065167910</a></td>
+      <td data-order="-160.877">-160.877</td>
+      <td data-order="72.132">72.132</td>
+      <td data-order="-160.806">-160.806</td>
+      <td data-order="72.134">72.134</td>
+      <td data-order="4929.389">4929.389</td>
+      <td data-order="23216.001">23216.001</td>
+      <td data-order="2.442521">2.442521</td>
+      <td data-order="3.237663">3.237663</td>
+      <td data-order="0.795142">0.795142</td>
+      <td data-order="84.723729">84.723729</td>
+      <td data-order="56.595261">56.595261</td>
+      <td data-order="28.128467">28.128467</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534067318090.html" target="_blank">300534067318090</a></td>
+      <td data-order="-153.071">-153.071</td>
+      <td data-order="71.872">71.872</td>
+      <td data-order="-153.081">-153.081</td>
+      <td data-order="71.959">71.959</td>
+      <td data-order="12610.338">12610.338</td>
+      <td data-order="29670.497">29670.497</td>
+      <td data-order="9.714103">9.714103</td>
+      <td data-order="15.169765">15.169765</td>
+      <td data-order="5.455662">5.455662</td>
+      <td data-order="357.959959">357.959959</td>
+      <td data-order="210.178465">210.178465</td>
+      <td data-order="147.781493">147.781493</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534067521860.html" target="_blank">300534067521860</a></td>
+      <td data-order="-156.213">-156.213</td>
+      <td data-order="72.867">72.867</td>
+      <td data-order="-156.362">-156.362</td>
+      <td data-order="72.937">72.937</td>
+      <td data-order="4936.005">4936.005</td>
+      <td data-order="20793.183">20793.183</td>
+      <td data-order="9.216870">9.216870</td>
+      <td data-order="12.178477">12.178477</td>
+      <td data-order="2.961607">2.961607</td>
+      <td data-order="328.017241">328.017241</td>
+      <td data-order="301.851854">301.851854</td>
+      <td data-order="26.165387">26.165387</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/4449608.html" target="_blank">4449608</a></td>
+      <td data-order="-51.575">-51.575</td>
+      <td data-order="69.063">69.063</td>
+      <td data-order="-51.750">-51.750</td>
+      <td data-order="69.022">69.022</td>
+      <td data-order="390027.186">390027.186</td>
+      <td data-order="395870.364">395870.364</td>
+      <td data-order="8.351831">8.351831</td>
+      <td data-order="8.728843">8.728843</td>
+      <td data-order="0.377012">0.377012</td>
+      <td data-order="236.878626">236.878626</td>
+      <td data-order="244.146343">244.146343</td>
+      <td data-order="7.267717">7.267717</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/4449899.html" target="_blank">4449899</a></td>
+      <td data-order="-51.248">-51.248</td>
+      <td data-order="69.200">69.200</td>
+      <td data-order="-51.242">-51.242</td>
+      <td data-order="69.208">69.208</td>
+      <td data-order="398250.289">398250.289</td>
+      <td data-order="409490.609">409490.609</td>
+      <td data-order="0.923563">0.923563</td>
+      <td data-order="9.788270">9.788270</td>
+      <td data-order="8.864706">8.864706</td>
+      <td data-order="14.920098">14.920098</td>
+      <td data-order="238.445277">238.445277</td>
+      <td data-order="223.525179">223.525179</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/4449902.html" target="_blank">4449902</a></td>
+      <td data-order="-52.666">-52.666</td>
+      <td data-order="69.219">69.219</td>
+      <td data-order="-52.652">-52.652</td>
+      <td data-order="69.304">69.304</td>
+      <td data-order="343368.187">343368.187</td>
+      <td data-order="353718.856">353718.856</td>
+      <td data-order="9.498107">9.498107</td>
+      <td data-order="10.339662">10.339662</td>
+      <td data-order="0.841555">0.841555</td>
+      <td data-order="3.334143">3.334143</td>
+      <td data-order="240.513605">240.513605</td>
+      <td data-order="237.179462">237.179462</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/4450699.html" target="_blank">4450699</a></td>
+      <td data-order="-51.491">-51.491</td>
+      <td data-order="69.341">69.341</td>
+      <td data-order="-51.632">-51.632</td>
+      <td data-order="69.318">69.318</td>
+      <td data-order="385086.046">385086.046</td>
+      <td data-order="400591.700">400591.700</td>
+      <td data-order="6.120631">6.120631</td>
+      <td data-order="10.585779">10.585779</td>
+      <td data-order="4.465148">4.465148</td>
+      <td data-order="245.282299">245.282299</td>
+      <td data-order="256.681534">256.681534</td>
+      <td data-order="11.399235">11.399235</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/4450705.html" target="_blank">4450705</a></td>
+      <td data-order="-53.032">-53.032</td>
+      <td data-order="69.242">69.242</td>
+      <td data-order="-53.134">-53.134</td>
+      <td data-order="69.245">69.245</td>
+      <td data-order="328687.041">328687.041</td>
+      <td data-order="339495.118">339495.118</td>
+      <td data-order="4.049714">4.049714</td>
+      <td data-order="10.616374">10.616374</td>
+      <td data-order="6.566660">6.566660</td>
+      <td data-order="274.787856">274.787856</td>
+      <td data-order="238.508231">238.508231</td>
+      <td data-order="36.279625">36.279625</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/4450753.html" target="_blank">4450753</a></td>
+      <td data-order="-53.120">-53.120</td>
+      <td data-order="69.254">69.254</td>
+      <td data-order="-53.152">-53.152</td>
+      <td data-order="69.258">69.258</td>
+      <td data-order="324966.007">324966.007</td>
+      <td data-order="336039.288">336039.288</td>
+      <td data-order="1.341791">1.341791</td>
+      <td data-order="10.616374">10.616374</td>
+      <td data-order="9.274583">9.274583</td>
+      <td data-order="289.438463">289.438463</td>
+      <td data-order="238.508231">238.508231</td>
+      <td data-order="50.930232">50.930232</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534062789590.html" target="_blank">300534062789590</a></td>
+      <td data-order="-171.843">-171.843</td>
+      <td data-order="77.792">77.792</td>
+      <td data-order="-171.666">-171.666</td>
+      <td data-order="77.914">77.914</td>
+      <td data-order="6344.641">6344.641</td>
+      <td data-order="21180.092">21180.092</td>
+      <td data-order="14.241478">14.241478</td>
+      <td data-order="16.091306">16.091306</td>
+      <td data-order="1.849828">1.849828</td>
+      <td data-order="16.894774">16.894774</td>
+      <td data-order="25.084020">25.084020</td>
+      <td data-order="8.189246">8.189246</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534065162750.html" target="_blank">300534065162750</a></td>
+      <td data-order="-162.581">-162.581</td>
+      <td data-order="78.445">78.445</td>
+      <td data-order="-162.375">-162.375</td>
+      <td data-order="78.587">78.587</td>
+      <td data-order="5633.168">5633.168</td>
+      <td data-order="21904.970">21904.970</td>
+      <td data-order="16.502548">16.502548</td>
+      <td data-order="9.148878">9.148878</td>
+      <td data-order="7.353670">7.353670</td>
+      <td data-order="16.013303">16.013303</td>
+      <td data-order="10.921646">10.921646</td>
+      <td data-order="5.091657">5.091657</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/301434060041150.html" target="_blank">301434060041150</a></td>
+      <td data-order="-111.373">-111.373</td>
+      <td data-order="85.683">85.683</td>
+      <td data-order="-110.513">-110.513</td>
+      <td data-order="85.670">85.670</td>
+      <td data-order="6755.850">6755.850</td>
+      <td data-order="21191.169">21191.169</td>
+      <td data-order="7.385419">7.385419</td>
+      <td data-order="5.649344">5.649344</td>
+      <td data-order="1.736075">1.736075</td>
+      <td data-order="100.908830">100.908830</td>
+      <td data-order="74.462446">74.462446</td>
+      <td data-order="26.446384">26.446384</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/900143.html" target="_blank">900143</a></td>
+      <td data-order="-159.032">-159.032</td>
+      <td data-order="76.599">76.599</td>
+      <td data-order="-158.940">-158.940</td>
+      <td data-order="76.729">76.729</td>
+      <td data-order="12029.169">12029.169</td>
+      <td data-order="27798.433">27798.433</td>
+      <td data-order="14.704624">14.704624</td>
+      <td data-order="10.828542">10.828542</td>
+      <td data-order="3.876081">3.876081</td>
+      <td data-order="9.229540">9.229540</td>
+      <td data-order="342.956027">342.956027</td>
+      <td data-order="333.726487">333.726487</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534062125830.html" target="_blank">300534062125830</a></td>
+      <td data-order="-14.061">-14.061</td>
+      <td data-order="72.876">72.876</td>
+      <td data-order="-14.020">-14.020</td>
+      <td data-order="72.863">72.863</td>
+      <td data-order="36269.395">36269.395</td>
+      <td data-order="54827.856">54827.856</td>
+      <td data-order="1.980674">1.980674</td>
+      <td data-order="4.072108">4.072108</td>
+      <td data-order="2.091434">2.091434</td>
+      <td data-order="137.072775">137.072775</td>
+      <td data-order="238.466546">238.466546</td>
+      <td data-order="101.393772">101.393772</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534064263630.html" target="_blank">300534064263630</a></td>
+      <td data-order="-28.858">-28.858</td>
+      <td data-order="66.511">66.511</td>
+      <td data-order="-28.858">-28.858</td>
+      <td data-order="66.511">66.511</td>
+      <td data-order="627505.447">627505.447</td>
+      <td data-order="658695.915">658695.915</td>
+      <td data-order="0.000000">0.000000</td>
+      <td data-order="4.744145">4.744145</td>
+      <td data-order="4.744145">4.744145</td>
+      <td data-order="180.000000">180.000000</td>
+      <td data-order="183.022234">183.022234</td>
+      <td data-order="3.022234">3.022234</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534060951200.html" target="_blank">300534060951200</a></td>
+      <td data-order="-155.932">-155.932</td>
+      <td data-order="71.883">71.883</td>
+      <td data-order="-155.891">-155.891</td>
+      <td data-order="71.926">71.926</td>
+      <td data-order="21166.113">21166.113</td>
+      <td data-order="43318.313">43318.313</td>
+      <td data-order="5.004419">5.004419</td>
+      <td data-order="7.454646">7.454646</td>
+      <td data-order="2.450226">2.450226</td>
+      <td data-order="16.487586">16.487586</td>
+      <td data-order="321.491263">321.491263</td>
+      <td data-order="305.003678">305.003678</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300534062025510.html" target="_blank">300534062025510</a></td>
+      <td data-order="-17.051">-17.051</td>
+      <td data-order="75.706">75.706</td>
+      <td data-order="-17.054">-17.054</td>
+      <td data-order="75.704">75.704</td>
+      <td data-order="50086.161">50086.161</td>
+      <td data-order="64646.180">64646.180</td>
+      <td data-order="0.238082">0.238082</td>
+      <td data-order="2.405041">2.405041</td>
+      <td data-order="2.166959">2.166959</td>
+      <td data-order="200.332323">200.332323</td>
+      <td data-order="204.699103">204.699103</td>
+      <td data-order="4.366780">4.366780</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234066216690.html" target="_blank">300234066216690</a></td>
+      <td data-order="8.829">8.829</td>
+      <td data-order="63.757">63.757</td>
+      <td data-order="8.828">8.828</td>
+      <td data-order="63.758">63.758</td>
+      <td data-order="1398641.810">1398641.810</td>
+      <td data-order="1418258.430">1418258.430</td>
+      <td data-order="0.121911">0.121911</td>
+      <td data-order="8.697725">8.697725</td>
+      <td data-order="8.575814">8.575814</td>
+      <td data-order="336.118893">336.118893</td>
+      <td data-order="209.305499">209.305499</td>
+      <td data-order="126.813394">126.813394</td>
+    </tr>
+    <tr>
+      <td><a href="../buoys/300234067877380.html" target="_blank">300234067877380</a></td>
+      <td data-order="-28.347">-28.347</td>
+      <td data-order="52.020">52.020</td>
+      <td data-order="-28.285">-28.285</td>
+      <td data-order="52.126">52.126</td>
+      <td data-order="2244234.996">2244234.996</td>
+      <td data-order="2287214.750">2287214.750</td>
+      <td data-order="12.537216">12.537216</td>
+      <td data-order="5.005414">5.005414</td>
+      <td data-order="7.531802">7.531802</td>
+      <td data-order="19.796324">19.796324</td>
+      <td data-order="178.647177">178.647177</td>
+      <td data-order="158.850852">158.850852</td>
+    </tr>
+  </tbody>
+</table></div><br>
+      <div style="height: 20px;"></div>
+    </div>
+  </body>
+</html>

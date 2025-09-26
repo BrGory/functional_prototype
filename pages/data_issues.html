@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Data Issues, Problems and Errors</title>
+    <style>body { margin: 0; font-family: sans-serif; }</style>
+  </head>
+  <body>
+    <h1 style="text-align: center;">Data Issues, Problems and Errors</h1><br>
+    <div id="issues_list">
+      <ul class="blank">
+        <li>Buoy Data
+          <ul class="blank">
+            <li>ERDDAP stopped reporting on 04-21-2025</li>
+            <li>Filtered out placeholder or faulty buoy positions recorded as (-90, -180), which are not valid for Arctic sea ice locations.</li>
+            <li>The UW IABP data had years &lt; 2010 and &gt; 2025, which disagrees with the table data on https://iabp.apl.uw.edu/TABLES/ArcticTable.html</li>
+            <li>Arctic buoy page on UW IABP has buoys with latitude &lt; 0. These buoys, like 300534062075100, could have been moved to Antarctic region.</li>
+            <li>Omitted buoys that do not include midnight readings, as those are required to anchor daily drift calculations. (e.g. 300434065758620)</li>
+            <li>There are a few occurances of only one observation, so drift cannot be computed. (e.g. 300434065169030)</li>
+            <li>Handled corrupted or blank Day-of-Year (DOY) values by coercing non-numeric entries to NaN and dropping those rows.</li>
+          </ul>
+        </li>
+        <li>SAR and Buoy Location Analysis
+          <ul class="blank">
+            <li>Some obsevations just had one SAR drift row. Since calculations need more than one row to measure difference in lon/lat, the observations were duplicated with the next lon/lat set to the previous ending lon/lat</li>
+            <li>Mutiple rows with same `lon1` and `lat1` positions but different `Lon2` and `Lat2` positions. The last row of these observations set `lon1`=`lon2` and `lat1`=`lat2`.</li>
+            <li>First and last rows with equal `lon1` and `Lon1`. The observations in between the first and last differ. The code updated the last `lon1` = `lon2` and last `lat1`=`lat2`.</li>
+            <li>Removed observations where `orig_bearing` = 0. The values for these observations are incorrect</li>
+          </ul>
+        </li>
+      </ul><br>
+      <div style="height: 20px;"></div>
+    </div>
+  </body>
+</html>
