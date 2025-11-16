@@ -3,14 +3,14 @@
   <head>
     <title>Detailed explantions on data results</title>
     <script type="text/javascript">
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['\\[', '\\]']]
-            },
-        svg: { fontCache: 'global' }
-        };
-        </script>
+            window.MathJax = {
+                tex: {
+                    inlineMath: [['$', '$'], ['\\(', '\\)']],
+                    displayMath: [['\\[', '\\]']]
+                },
+            svg: { fontCache: 'global' }
+            };
+            </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     <style>body { margin: 0; font-family: sans-serif; }</style>
   </head>
@@ -36,9 +36,34 @@ d = 2R \, \arcsin\!\Bigg( \sqrt{\, \sin^2\!\Big(\tfrac{\phi_2-\phi_1}{2}\Big) + 
 Here $\phi$ denotes latitude and $\lambda$ longitude (in radians).<br>**Notes.**<br>(1) Ensure all angles are converted to radians before applying the trigonometric functions: $\theta_\mathrm{rad} = \theta_\mathrm{deg}\,\pi/180$.<br>(2) $R$ is typically the Earth's mean radius, $R \approx 6371\,\text{km}$.</p>
       </div><br>
       <div style="height: 20px;"></div>
+      <div class="explanation-section" id="distance_calculation">
+        <b>Distance Caluclation</b>
+        <p>For the distance to be calculated on a particular day, the must be at least 20 hours elapsed from the previous day's observation time.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="buoy_sar_drift_arctic_wide">
+        <b>Buoy & SAR Drift Arctic Wide</b>
+        <p>Analyze and present the results of the SAR buoy ice motion compared to the in-situ buoy observations. Instructions provided by Chris Jackson <christopher.jackson@noaa.gov><br><br>1) 900121_HourlyVel_Sept2020-Mar2025.xlsx This is the bible. A set of velocity/displacement results derived from the IABP buoy data. The results are for 1-Day ice motions reported at the buoy reporting frequency (in this case every 30 min). It contains displacements and velocities from both Lon/Latand Polar Stereo format.<br><br>2) 900121E_Results_AllCorrelations_0050000m_0000500m.txt. The output of the SAR Ice motions program. It's in the same format as the the gfilter files. Except these files have not in fact been filtered. Any line where the Maxcorr2 is < Maxcorr1 should be considered a bad retrieval. The starting Lon/Lat is the buoy location at the time closest to the SAR image time. You might want to recompute the displacement via the Haversine formula.<br><br>3) 900121_IMS_Ice_Distance_Good.txt. These results should be paired with the results in 900121E_Results_AllCorrelations_0050000m_0000500m.txt and should be looked at to determine if there is a correlation between bad SAR retrievals and the distance to the ice edge.<br><br>4) SAR_IceMotion_IABPMatches_900121E.csv. More of a FYI - this was the total number of possible SAR/Buoy overpass pairs. Only about 1100 of these (2600+) resulted in a successful (but possibly invalid) SAR result.<br><br>5) 900121_CorrPNG.zip (link sent seperately). These are the visual outputs of the results contained in 900121E_Results_AllCorrelations_0050000m_0000500m.txt. Its more just FYI - it shows the two images being correlated, a the correlation image and the shifted result. You should be able see the correct shift.<br><br>NOTE: Daily drift for ice and buoys is calculated, not taken from the source data. This ensures consistency across the observations. The starting and ending lon/lat for the day will be used. The values are cast to EPSG:3413. Distances calculated from first lon/lat readings for each observation</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="bad_retrieval_correlation">
+        <b>Bad Retireval Correlation</b>
+        <p>Bad retrieveal is defined where MaxCorr2 < MaxCorr1. There might be an error in the satellite image measurements. Here, a correlation is found between the bad retreival value (`Y`: 1; `N`: 0) and the `dist_to_water` value. Values close to zero indivate no correlation while 1 indicates perfect correlation. Negative values mean the relationship is oppositely correlated.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
       <div class="explanation-section" id="life_drift_page">
         <b>Buoy Life Drift with SAR Measurements</b>
         <p>All of the data for a buoy is read along with available SAR drift measurements. The closest geographical buoy is marked to the closest SAR measurement. The timeframe of the buoy also is aligned with the timeframe of the SAR drift measurements. Typically a 24-hour period but no always at the same start time. The SAR measurments or made sometimes of the same satellite but more often from two different satellites. For each buoy position, the code takes the start lon/lat as point of comparison to other points; the end date and times are not used.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="life_drift_geopackage_overview">
+        <b>Buoy Life Drift and SAR Measurements Geopackage (Overview)</b>
+        <p>Entire track of the buoy and all SAR measurement tracks for each 24-hour period can be downloaded and view in GIS. The package also contains coastlines at 10m resolution.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="life_drift_geopackage_detail">
+        <b>Buoy Life Drift and SAR Measurements Geropackage (Detail)</b>
+        <p>Entire track of the buoy and SAR measurement tracks by satellite pairing for each 24-hour period can be downloaded and view in GIS. The package also contains coastlines at 10m resolution.</p>
       </div><br>
       <div style="height: 20px;"></div>
       <div class="explanation-section" id="life_drift_descriptive_stats">
@@ -49,6 +74,11 @@ Here $\phi$ denotes latitude and $\lambda$ longitude (in radians).<br>**Notes.**
       <div class="explanation-section" id="life_drift_seasonal_scatterplots">
         <b>Buoy life scatter plots</b>
         <p>The scatter plots show a breakdown of bearings and distances between buoys and SAR drift per season. Regression has been calculated per season. The `y=x` line shown indicates perfect correlation for reference. Seasons defined as:<br>Winter ⮕ 12/21 to 3/20<br>Spring ⮕ 3/21 to 6/20<br>Summer ⮕ 6/21 to 9/20<br>Fall ⮕ 9/21 to 12/20</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="ransac">
+        <b>RANSAC</b>
+        <p>The RANSAC algorithm splits the data into `inliers` and `outliers`. The regression line is calculated on the inliers. Since each season has some outliers, which could due to misreadings or other errata, the RANSAC can provide a truer relationship. More information found here: https://scikit-learn.org/stable/auto_examples/linear_model/plot_ransac.html#sphx-glr-auto-examples-linear-model-plot-ransac-py</p>
       </div><br>
       <div style="height: 20px;"></div>
       <div class="explanation-section" id="life_drift_seasonal_bearing_plots">

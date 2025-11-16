@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Data tables used for EDA</title>
+    <style>body { margin: 0; font-family: sans-serif; }</style>
+  </head>
+  <body>
+    <h1 style="text-align: center;">Data tables used for EDA</h1><br>
+    <div id="data_tables">
+      <div id="buoy_table">
+        <h3>Buoy Class Table</h3>
+        <div id="buoy_data_table"><table border="1" class="dataframe table table-striped sortable">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Data Type</th>
+      <th>Example Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Feature</td>
+      <td>object</td>
+      <td>buoy_id</td>
+    </tr>
+    <tr>
+      <td>Data Type</td>
+      <td>object</td>
+      <td>str</td>
+    </tr>
+    <tr>
+      <td>Example Value</td>
+      <td>object</td>
+      <td data-order="300234011092780">300234011092780</td>
+    </tr>
+  </tbody>
+</table></div>
+        <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+        <style>#buoy_data_table th:nth-child(1), #buoy_data_table td:nth-child(1) { text-align: left; }#buoy_data_table th:nth-child(2), #buoy_data_table td:nth-child(2) { text-align: center; }#buoy_data_table th:nth-child(3), #buoy_data_table td:nth-child(3) { text-align: right; }</style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+                $(document).ready(function() {
+                    let table = $('#buoy_data_table table').DataTable();
+    
+                    let type_order = 'custom-null-sort-pre';
+                    $.fn.dataTable.ext.type.order[type_order] = function(data) {
+                        if (data === "" || data === null || data === "Infinity") return Infinity;
+                        if (data === "-Infinity") return -Infinity;
+                        return parseFloat(data);
+                    };
+    
+                    table.on('order.dt', function(e, settings) {
+                        let order = settings.aaSorting[0];
+                        let colIndex = order[0];
+                        let sortDir = order[1];
+    
+                        $('#buoy_data_table table tbody tr td:nth-child(' + (colIndex + 1) + ')').each(function() {
+                            let cell = $(this);
+                            let val = cell.attr('data-order');
+                            if (val === "Infinity" || val === "-Infinity") {
+                                cell.attr('data-order', sortDir === 'asc' ? "-Infinity" : "Infinity");
+                            }
+                        });
+                    });
+    
+                    table.columns().every(function() {
+                        let column = this;
+                        let type = column.data().type();
+                        if (type === 'num') {
+                            column.order('custom-null-sort-pre');
+                        }
+                    });
+                });
+            </script>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div id="buoy_daily_drift">
+        <h3>Individual Buoy Drift Table</h3>
+        <div id="buoy_daily_drift_table"><table border="1" class="dataframe table table-striped sortable">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Data Type</th>
+      <th>Example Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>date</td>
+      <td>datetime64[ns]</td>
+      <td>2025-03-05 00:00:00</td>
+    </tr>
+    <tr>
+      <td>buoy_id</td>
+      <td>object</td>
+      <td data-order="300234011092780">300234011092780</td>
+    </tr>
+    <tr>
+      <td>first_longitude</td>
+      <td>float64</td>
+      <td data-order="23.662">23.662</td>
+    </tr>
+    <tr>
+      <td>last_longitude</td>
+      <td>float64</td>
+      <td data-order="23.655">23.655</td>
+    </tr>
+    <tr>
+      <td>first_latitude</td>
+      <td>float64</td>
+      <td data-order="65.293">65.293</td>
+    </tr>
+    <tr>
+      <td>last_latitude</td>
+      <td>float64</td>
+      <td data-order="65.293">65.293</td>
+    </tr>
+    <tr>
+      <td>first_x</td>
+      <td>float64</td>
+      <td data-order="2530774.987">2530774.987</td>
+    </tr>
+    <tr>
+      <td>last_x</td>
+      <td>float64</td>
+      <td data-order="2530654.183">2530654.183</td>
+    </tr>
+    <tr>
+      <td>dx</td>
+      <td>float64</td>
+      <td data-order="-120.804">-120.804</td>
+    </tr>
+    <tr>
+      <td>first_y</td>
+      <td>float64</td>
+      <td data-order="-988642.053">-988642.053</td>
+    </tr>
+    <tr>
+      <td>last_y</td>
+      <td>float64</td>
+      <td data-order="-988951.239">-988951.239</td>
+    </tr>
+    <tr>
+      <td>dy</td>
+      <td>float64</td>
+      <td data-order="-309.186">-309.186</td>
+    </tr>
+    <tr>
+      <td>fwd_azimuth</td>
+      <td>float64</td>
+      <td data-order="270.003">270.003</td>
+    </tr>
+    <tr>
+      <td>total_distance_km</td>
+      <td>float64</td>
+      <td data-order="0.332">0.332</td>
+    </tr>
+  </tbody>
+</table></div>
+        <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+        <style>#buoy_daily_drift_table th:nth-child(1), #buoy_daily_drift_table td:nth-child(1) { text-align: left; }#buoy_daily_drift_table th:nth-child(2), #buoy_daily_drift_table td:nth-child(2) { text-align: center; }#buoy_daily_drift_table th:nth-child(3), #buoy_daily_drift_table td:nth-child(3) { text-align: right; }</style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+                $(document).ready(function() {
+                    let table = $('#buoy_daily_drift_table table').DataTable();
+    
+                    let type_order = 'custom-null-sort-pre';
+                    $.fn.dataTable.ext.type.order[type_order] = function(data) {
+                        if (data === "" || data === null || data === "Infinity") return Infinity;
+                        if (data === "-Infinity") return -Infinity;
+                        return parseFloat(data);
+                    };
+    
+                    table.on('order.dt', function(e, settings) {
+                        let order = settings.aaSorting[0];
+                        let colIndex = order[0];
+                        let sortDir = order[1];
+    
+                        $('#buoy_daily_drift_table table tbody tr td:nth-child(' + (colIndex + 1) + ')').each(function() {
+                            let cell = $(this);
+                            let val = cell.attr('data-order');
+                            if (val === "Infinity" || val === "-Infinity") {
+                                cell.attr('data-order', sortDir === 'asc' ? "-Infinity" : "Infinity");
+                            }
+                        });
+                    });
+    
+                    table.columns().every(function() {
+                        let column = this;
+                        let type = column.data().type();
+                        if (type === 'num') {
+                            column.order('custom-null-sort-pre');
+                        }
+                    });
+                });
+            </script>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div id="drift">
+        <h3>All Buoys Drift Table</h3>
+        <div id="drift_table"><table border="1" class="dataframe table table-striped sortable">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Data Type</th>
+      <th>Example Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>date</td>
+      <td>datetime64[ns]</td>
+      <td>2025-03-05 00:00:00</td>
+    </tr>
+    <tr>
+      <td>buoy_id</td>
+      <td>object</td>
+      <td data-order="300234011092780">300234011092780</td>
+    </tr>
+    <tr>
+      <td>first_longitude</td>
+      <td>float64</td>
+      <td data-order="23.662">23.662</td>
+    </tr>
+    <tr>
+      <td>last_longitude</td>
+      <td>float64</td>
+      <td data-order="23.655">23.655</td>
+    </tr>
+    <tr>
+      <td>first_latitude</td>
+      <td>float64</td>
+      <td data-order="65.293">65.293</td>
+    </tr>
+    <tr>
+      <td>last_latitude</td>
+      <td>float64</td>
+      <td data-order="65.293">65.293</td>
+    </tr>
+    <tr>
+      <td>first_x</td>
+      <td>float64</td>
+      <td data-order="2530774.987">2530774.987</td>
+    </tr>
+    <tr>
+      <td>last_x</td>
+      <td>float64</td>
+      <td data-order="2530654.183">2530654.183</td>
+    </tr>
+    <tr>
+      <td>dx</td>
+      <td>float64</td>
+      <td data-order="-120.804">-120.804</td>
+    </tr>
+    <tr>
+      <td>first_y</td>
+      <td>float64</td>
+      <td data-order="-988642.053">-988642.053</td>
+    </tr>
+    <tr>
+      <td>last_y</td>
+      <td>float64</td>
+      <td data-order="-988951.239">-988951.239</td>
+    </tr>
+    <tr>
+      <td>dy</td>
+      <td>float64</td>
+      <td data-order="-309.186">-309.186</td>
+    </tr>
+    <tr>
+      <td>fwd_azimuth</td>
+      <td>float64</td>
+      <td data-order="270.003">270.003</td>
+    </tr>
+    <tr>
+      <td>total_distance_km</td>
+      <td>float64</td>
+      <td data-order="0.332">0.332</td>
+    </tr>
+    <tr>
+      <td>sea_sector_id</td>
+      <td>object</td>
+      <td data-order="6">6</td>
+    </tr>
+  </tbody>
+</table></div>
+        <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+        <style>#drift_table th:nth-child(1), #drift_table td:nth-child(1) { text-align: left; }#drift_table th:nth-child(2), #drift_table td:nth-child(2) { text-align: center; }#drift_table th:nth-child(3), #drift_table td:nth-child(3) { text-align: right; }</style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+                $(document).ready(function() {
+                    let table = $('#drift_table table').DataTable();
+    
+                    let type_order = 'custom-null-sort-pre';
+                    $.fn.dataTable.ext.type.order[type_order] = function(data) {
+                        if (data === "" || data === null || data === "Infinity") return Infinity;
+                        if (data === "-Infinity") return -Infinity;
+                        return parseFloat(data);
+                    };
+    
+                    table.on('order.dt', function(e, settings) {
+                        let order = settings.aaSorting[0];
+                        let colIndex = order[0];
+                        let sortDir = order[1];
+    
+                        $('#drift_table table tbody tr td:nth-child(' + (colIndex + 1) + ')').each(function() {
+                            let cell = $(this);
+                            let val = cell.attr('data-order');
+                            if (val === "Infinity" || val === "-Infinity") {
+                                cell.attr('data-order', sortDir === 'asc' ? "-Infinity" : "Infinity");
+                            }
+                        });
+                    });
+    
+                    table.columns().every(function() {
+                        let column = this;
+                        let type = column.data().type();
+                        if (type === 'num') {
+                            column.order('custom-null-sort-pre');
+                        }
+                    });
+                });
+            </script>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div id="raw">
+        <h3>Raw Downloaded Data Table</h3>
+        <div id="raw_table"><table border="1" class="dataframe table table-striped sortable">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Data Type</th>
+      <th>Example Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>time (UTC)</td>
+      <td>object</td>
+      <td>2025-03-05T16:49:00Z</td>
+    </tr>
+    <tr>
+      <td>latitude (degrees_north)</td>
+      <td>float64</td>
+      <td data-order="65.2934">65.2934</td>
+    </tr>
+    <tr>
+      <td>longitude (degrees_east)</td>
+      <td>float64</td>
+      <td data-order="23.662">23.662</td>
+    </tr>
+    <tr>
+      <td>bp (mBars)</td>
+      <td>float64</td>
+      <td data-order="981.0">981.0</td>
+    </tr>
+    <tr>
+      <td>surface_temp (degree_C)</td>
+      <td>object</td>
+      <td data-order="7.70">7.70</td>
+    </tr>
+    <tr>
+      <td>air_temp (degree_C)</td>
+      <td>object</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>has_bp</td>
+      <td>object</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>has_surface_temp</td>
+      <td>object</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>has_air_temp</td>
+      <td>object</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <td>buoy_id</td>
+      <td>object</td>
+      <td data-order="300234011092780">300234011092780</td>
+    </tr>
+    <tr>
+      <td>buoy_type</td>
+      <td>object</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>buoy_owner</td>
+      <td>object</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>logistics</td>
+      <td>object</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>hemisphere</td>
+      <td>object</td>
+      <td>North</td>
+    </tr>
+    <tr>
+      <td>year</td>
+      <td>int64</td>
+      <td data-order="2025">2025</td>
+    </tr>
+    <tr>
+      <td>hour</td>
+      <td>object</td>
+      <td data-order="16">16</td>
+    </tr>
+    <tr>
+      <td>minute</td>
+      <td>object</td>
+      <td data-order="49">49</td>
+    </tr>
+    <tr>
+      <td>day_of_year</td>
+      <td>float64</td>
+      <td data-order="64.7007">64.7007</td>
+    </tr>
+  </tbody>
+</table></div>
+        <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+        <style>#raw_table th:nth-child(1), #raw_table td:nth-child(1) { text-align: left; }#raw_table th:nth-child(2), #raw_table td:nth-child(2) { text-align: center; }#raw_table th:nth-child(3), #raw_table td:nth-child(3) { text-align: right; }</style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+                $(document).ready(function() {
+                    let table = $('#raw_table table').DataTable();
+    
+                    let type_order = 'custom-null-sort-pre';
+                    $.fn.dataTable.ext.type.order[type_order] = function(data) {
+                        if (data === "" || data === null || data === "Infinity") return Infinity;
+                        if (data === "-Infinity") return -Infinity;
+                        return parseFloat(data);
+                    };
+    
+                    table.on('order.dt', function(e, settings) {
+                        let order = settings.aaSorting[0];
+                        let colIndex = order[0];
+                        let sortDir = order[1];
+    
+                        $('#raw_table table tbody tr td:nth-child(' + (colIndex + 1) + ')').each(function() {
+                            let cell = $(this);
+                            let val = cell.attr('data-order');
+                            if (val === "Infinity" || val === "-Infinity") {
+                                cell.attr('data-order', sortDir === 'asc' ? "-Infinity" : "Infinity");
+                            }
+                        });
+                    });
+    
+                    table.columns().every(function() {
+                        let column = this;
+                        let type = column.data().type();
+                        if (type === 'num') {
+                            column.order('custom-null-sort-pre');
+                        }
+                    });
+                });
+            </script>
+        <h3>Formatted Downloaded Data Table</h3>
+        <div id="formatted_table"><table border="1" class="dataframe table table-striped sortable">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Data Type</th>
+      <th>Example Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>time</td>
+      <td>datetime64[ns, UTC]</td>
+      <td>2025-03-05 16:49:00+00:00</td>
+    </tr>
+    <tr>
+      <td>latitude</td>
+      <td>float64</td>
+      <td data-order="65.293">65.293</td>
+    </tr>
+    <tr>
+      <td>longitude</td>
+      <td>float64</td>
+      <td data-order="23.662">23.662</td>
+    </tr>
+    <tr>
+      <td>bp</td>
+      <td>float64</td>
+      <td data-order="981.0">981.0</td>
+    </tr>
+    <tr>
+      <td>surface_temp</td>
+      <td>float64</td>
+      <td data-order="7.7">7.7</td>
+    </tr>
+    <tr>
+      <td>air_temp</td>
+      <td>float64</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <td>has_bp</td>
+      <td>object</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>has_surface_temp</td>
+      <td>object</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>has_air_temp</td>
+      <td>object</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <td>buoy_id</td>
+      <td>object</td>
+      <td data-order="300234011092780">300234011092780</td>
+    </tr>
+    <tr>
+      <td>buoy_type</td>
+      <td>object</td>
+      <td>UNKNOWN</td>
+    </tr>
+    <tr>
+      <td>buoy_owner</td>
+      <td>object</td>
+      <td>UNKNOWN</td>
+    </tr>
+    <tr>
+      <td>buoy_program</td>
+      <td>object</td>
+      <td>UNKNOWN</td>
+    </tr>
+    <tr>
+      <td>hemisphere</td>
+      <td>object</td>
+      <td>North</td>
+    </tr>
+    <tr>
+      <td>year</td>
+      <td>int64</td>
+      <td data-order="2025">2025</td>
+    </tr>
+    <tr>
+      <td>hour</td>
+      <td>object</td>
+      <td data-order="16">16</td>
+    </tr>
+    <tr>
+      <td>minute</td>
+      <td>object</td>
+      <td data-order="49">49</td>
+    </tr>
+    <tr>
+      <td>day_of_year</td>
+      <td>float64</td>
+      <td data-order="64.7007">64.7007</td>
+    </tr>
+    <tr>
+      <td>sea_sector_id</td>
+      <td>object</td>
+      <td data-order="6">6</td>
+    </tr>
+    <tr>
+      <td>buoy_status</td>
+      <td>object</td>
+      <td>possibly onshore</td>
+    </tr>
+    <tr>
+      <td>formatted_date</td>
+      <td>datetime64[ns]</td>
+      <td>2025-03-05 00:00:00</td>
+    </tr>
+    <tr>
+      <td>formatted_time</td>
+      <td>object</td>
+      <td>16:49:00</td>
+    </tr>
+    <tr>
+      <td>buoy_owner_category</td>
+      <td>object</td>
+      <td>UNKNOWN</td>
+    </tr>
+    <tr>
+      <td>buoy_type_category</td>
+      <td>object</td>
+      <td>UNKNOWN</td>
+    </tr>
+    <tr>
+      <td>buoy_program_category</td>
+      <td>object</td>
+      <td>UNKNOWN</td>
+    </tr>
+  </tbody>
+</table></div>
+        <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+        <style>#formatted_table th:nth-child(1), #formatted_table td:nth-child(1) { text-align: left; }#formatted_table th:nth-child(2), #formatted_table td:nth-child(2) { text-align: center; }#formatted_table th:nth-child(3), #formatted_table td:nth-child(3) { text-align: right; }</style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+                $(document).ready(function() {
+                    let table = $('#formatted_table table').DataTable();
+    
+                    let type_order = 'custom-null-sort-pre';
+                    $.fn.dataTable.ext.type.order[type_order] = function(data) {
+                        if (data === "" || data === null || data === "Infinity") return Infinity;
+                        if (data === "-Infinity") return -Infinity;
+                        return parseFloat(data);
+                    };
+    
+                    table.on('order.dt', function(e, settings) {
+                        let order = settings.aaSorting[0];
+                        let colIndex = order[0];
+                        let sortDir = order[1];
+    
+                        $('#formatted_table table tbody tr td:nth-child(' + (colIndex + 1) + ')').each(function() {
+                            let cell = $(this);
+                            let val = cell.attr('data-order');
+                            if (val === "Infinity" || val === "-Infinity") {
+                                cell.attr('data-order', sortDir === 'asc' ? "-Infinity" : "Infinity");
+                            }
+                        });
+                    });
+    
+                    table.columns().every(function() {
+                        let column = this;
+                        let type = column.data().type();
+                        if (type === 'num') {
+                            column.order('custom-null-sort-pre');
+                        }
+                    });
+                });
+            </script>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div id="raw"></div><br>
+      <div style="height: 20px;"></div>
+      <div id="buoy_life">
+        <h3>Buoy Life Data Table</h3>
+        <div id="buoy_life_table"><table border="1" class="dataframe table table-striped sortable">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Data Type</th>
+      <th>Example Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>buoy_id</td>
+      <td>int64</td>
+      <td data-order="900121">900121</td>
+    </tr>
+    <tr>
+      <td>date</td>
+      <td>object</td>
+      <td>2020-09-20</td>
+    </tr>
+    <tr>
+      <td>time</td>
+      <td>object</td>
+      <td>12:00:00</td>
+    </tr>
+    <tr>
+      <td>start_lon</td>
+      <td>float64</td>
+      <td data-order="-137.387">-137.387</td>
+    </tr>
+    <tr>
+      <td>start_lat</td>
+      <td>float64</td>
+      <td data-order="77.369">77.369</td>
+    </tr>
+    <tr>
+      <td>end_lon</td>
+      <td>float64</td>
+      <td data-order="-137.661">-137.661</td>
+    </tr>
+    <tr>
+      <td>end_lat</td>
+      <td>float64</td>
+      <td data-order="77.36">77.36</td>
+    </tr>
+    <tr>
+      <td>bearing</td>
+      <td>float64</td>
+      <td data-order="261.597">261.597</td>
+    </tr>
+    <tr>
+      <td>distance</td>
+      <td>float64</td>
+      <td data-order="6.768">6.768</td>
+    </tr>
+    <tr>
+      <td>time_delta</td>
+      <td>timedelta64[ns]</td>
+      <td>0 days 12:00:00</td>
+    </tr>
+    <tr>
+      <td>total_seconds</td>
+      <td>float64</td>
+      <td data-order="43200.0">43200.0</td>
+    </tr>
+  </tbody>
+</table></div>
+        <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+        <style>#buoy_life_table th:nth-child(1), #buoy_life_table td:nth-child(1) { text-align: left; }#buoy_life_table th:nth-child(2), #buoy_life_table td:nth-child(2) { text-align: center; }#buoy_life_table th:nth-child(3), #buoy_life_table td:nth-child(3) { text-align: right; }</style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+                $(document).ready(function() {
+                    let table = $('#buoy_life_table table').DataTable();
+    
+                    let type_order = 'custom-null-sort-pre';
+                    $.fn.dataTable.ext.type.order[type_order] = function(data) {
+                        if (data === "" || data === null || data === "Infinity") return Infinity;
+                        if (data === "-Infinity") return -Infinity;
+                        return parseFloat(data);
+                    };
+    
+                    table.on('order.dt', function(e, settings) {
+                        let order = settings.aaSorting[0];
+                        let colIndex = order[0];
+                        let sortDir = order[1];
+    
+                        $('#buoy_life_table table tbody tr td:nth-child(' + (colIndex + 1) + ')').each(function() {
+                            let cell = $(this);
+                            let val = cell.attr('data-order');
+                            if (val === "Infinity" || val === "-Infinity") {
+                                cell.attr('data-order', sortDir === 'asc' ? "-Infinity" : "Infinity");
+                            }
+                        });
+                    });
+    
+                    table.columns().every(function() {
+                        let column = this;
+                        let type = column.data().type();
+                        if (type === 'num') {
+                            column.order('custom-null-sort-pre');
+                        }
+                    });
+                });
+            </script>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div id="sar_daily_drift">
+        <h3>SAR Daily Drift</h3>
+        <div id="buoy_life_table"><table border="1" class="dataframe table table-striped sortable">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Data Type</th>
+      <th>Example Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>File1</td>
+      <td>object</td>
+      <td>RCM2_SHUB_2021_12_02_15_46_13_0691775173_135.10W_72.96N_HH_C</td>
+    </tr>
+    <tr>
+      <td>File2</td>
+      <td>object</td>
+      <td>S1B_ESA_2021_12_03_16_00_57_0691862457_135.89W_73.60N_HH_C</td>
+    </tr>
+    <tr>
+      <td>Time1_JS</td>
+      <td>int64</td>
+      <td data-order="691775173">691775173</td>
+    </tr>
+    <tr>
+      <td>Time2_JS</td>
+      <td>int64</td>
+      <td data-order="691862457">691862457</td>
+    </tr>
+    <tr>
+      <td>Lon1</td>
+      <td>float64</td>
+      <td data-order="-142.661">-142.661</td>
+    </tr>
+    <tr>
+      <td>Lat1</td>
+      <td>float64</td>
+      <td data-order="72.38">72.38</td>
+    </tr>
+    <tr>
+      <td>Lon2</td>
+      <td>float64</td>
+      <td data-order="-142.549">-142.549</td>
+    </tr>
+    <tr>
+      <td>Lat2</td>
+      <td>float64</td>
+      <td data-order="72.353">72.353</td>
+    </tr>
+    <tr>
+      <td>U_vel_ms</td>
+      <td>float64</td>
+      <td data-order="0.04342">0.04342</td>
+    </tr>
+    <tr>
+      <td>V_vel_ms</td>
+      <td>float64</td>
+      <td data-order="-0.03437">-0.03437</td>
+    </tr>
+    <tr>
+      <td>Speed_kmdy</td>
+      <td>float64</td>
+      <td data-order="4.78469">4.78469</td>
+    </tr>
+    <tr>
+      <td>Bear_deg</td>
+      <td>float64</td>
+      <td data-order="128.35857">128.35857</td>
+    </tr>
+    <tr>
+      <td>Maxcorr1</td>
+      <td>float64</td>
+      <td data-order="0.46567">0.46567</td>
+    </tr>
+    <tr>
+      <td>Maxcorr2</td>
+      <td>float64</td>
+      <td data-order="0.55651">0.55651</td>
+    </tr>
+    <tr>
+      <td>img1_mean</td>
+      <td>float64</td>
+      <td data-order="0.022709">0.022709</td>
+    </tr>
+    <tr>
+      <td>img1_std</td>
+      <td>float64</td>
+      <td data-order="0.012231">0.012231</td>
+    </tr>
+    <tr>
+      <td>img2_mean</td>
+      <td>float64</td>
+      <td data-order="0.020251">0.020251</td>
+    </tr>
+    <tr>
+      <td>img2_std</td>
+      <td>float64</td>
+      <td data-order="0.014974">0.014974</td>
+    </tr>
+    <tr>
+      <td>img1s_mean</td>
+      <td>float64</td>
+      <td data-order="0.021815">0.021815</td>
+    </tr>
+    <tr>
+      <td>img1s_std</td>
+      <td>float64</td>
+      <td data-order="0.011896">0.011896</td>
+    </tr>
+    <tr>
+      <td>Per_Valid</td>
+      <td>float64</td>
+      <td data-order="99.034">99.034</td>
+    </tr>
+    <tr>
+      <td>Date1</td>
+      <td>object</td>
+      <td>2021-12-02 15:46:13</td>
+    </tr>
+    <tr>
+      <td>Date2</td>
+      <td>object</td>
+      <td>2021-12-03 16:00:57</td>
+    </tr>
+    <tr>
+      <td>Duration</td>
+      <td>object</td>
+      <td>1 days 00:14:44</td>
+    </tr>
+    <tr>
+      <td>JS_Duration</td>
+      <td>int64</td>
+      <td data-order="87284">87284</td>
+    </tr>
+    <tr>
+      <td>X1</td>
+      <td>float64</td>
+      <td data-order="-1906138.729625">-1906138.729625</td>
+    </tr>
+    <tr>
+      <td>Y1</td>
+      <td>float64</td>
+      <td data-order="256399.003218">256399.003218</td>
+    </tr>
+    <tr>
+      <td>X2</td>
+      <td>float64</td>
+      <td data-order="-1909602.758477">-1909602.758477</td>
+    </tr>
+    <tr>
+      <td>Y2</td>
+      <td>float64</td>
+      <td data-order="253065.579713">253065.579713</td>
+    </tr>
+    <tr>
+      <td>U_kmdy</td>
+      <td>float64</td>
+      <td data-order="3.751488">3.751488</td>
+    </tr>
+    <tr>
+      <td>V_kmdy</td>
+      <td>float64</td>
+      <td data-order="-2.969568">-2.969568</td>
+    </tr>
+    <tr>
+      <td>dx</td>
+      <td>float64</td>
+      <td data-order="-3464.028852">-3464.028852</td>
+    </tr>
+    <tr>
+      <td>dy</td>
+      <td>float64</td>
+      <td data-order="-3333.423505">-3333.423505</td>
+    </tr>
+    <tr>
+      <td>total_distance_km</td>
+      <td>float64</td>
+      <td data-order="4.807">4.807</td>
+    </tr>
+    <tr>
+      <td>dx_norm</td>
+      <td>float64</td>
+      <td data-order="1.783639">1.783639</td>
+    </tr>
+    <tr>
+      <td>dy_norm</td>
+      <td>float64</td>
+      <td data-order="2.304723">2.304723</td>
+    </tr>
+  </tbody>
+</table></div>
+        <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+        <style>#buoy_life_table th:nth-child(1), #buoy_life_table td:nth-child(1) { text-align: left; }#buoy_life_table th:nth-child(2), #buoy_life_table td:nth-child(2) { text-align: center; }#buoy_life_table th:nth-child(3), #buoy_life_table td:nth-child(3) { text-align: right; }</style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+                $(document).ready(function() {
+                    let table = $('#buoy_life_table table').DataTable();
+    
+                    let type_order = 'custom-null-sort-pre';
+                    $.fn.dataTable.ext.type.order[type_order] = function(data) {
+                        if (data === "" || data === null || data === "Infinity") return Infinity;
+                        if (data === "-Infinity") return -Infinity;
+                        return parseFloat(data);
+                    };
+    
+                    table.on('order.dt', function(e, settings) {
+                        let order = settings.aaSorting[0];
+                        let colIndex = order[0];
+                        let sortDir = order[1];
+    
+                        $('#buoy_life_table table tbody tr td:nth-child(' + (colIndex + 1) + ')').each(function() {
+                            let cell = $(this);
+                            let val = cell.attr('data-order');
+                            if (val === "Infinity" || val === "-Infinity") {
+                                cell.attr('data-order', sortDir === 'asc' ? "-Infinity" : "Infinity");
+                            }
+                        });
+                    });
+    
+                    table.columns().every(function() {
+                        let column = this;
+                        let type = column.data().type();
+                        if (type === 'num') {
+                            column.order('custom-null-sort-pre');
+                        }
+                    });
+                });
+            </script>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div id="ims_distance">
+        <h3>IMS Distances Table</h3>
+        <div id="ims_distance_table"><table border="1" class="dataframe table table-striped sortable">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Data Type</th>
+      <th>Example Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>nc_file</td>
+      <td>object</td>
+      <td>RCM1_SHUB_2021_02_20_16_41_55_0667154515_148.22W_74.04N_HH_C_nrcs_level2.nc</td>
+    </tr>
+    <tr>
+      <td>lon</td>
+      <td>float64</td>
+      <td data-order="-150.2">-150.2</td>
+    </tr>
+    <tr>
+      <td>lat</td>
+      <td>float64</td>
+      <td data-order="73.49">73.49</td>
+    </tr>
+    <tr>
+      <td>ims</td>
+      <td>int64</td>
+      <td data-order="3">3</td>
+    </tr>
+    <tr>
+      <td>dist_to_ice</td>
+      <td>float64</td>
+      <td data-order="-0.0">-0.0</td>
+    </tr>
+    <tr>
+      <td>dist_to_water</td>
+      <td>float64</td>
+      <td data-order="3276.9">3276.9</td>
+    </tr>
+    <tr>
+      <td>key</td>
+      <td>object</td>
+      <td>RCM1_SHUB_2021_02_20_16_41_55_0667154515_148.22W_74.04N_HH_C</td>
+    </tr>
+  </tbody>
+</table></div>
+        <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+        <style>#ims_distance_table th:nth-child(1), #ims_distance_table td:nth-child(1) { text-align: left; }#ims_distance_table th:nth-child(2), #ims_distance_table td:nth-child(2) { text-align: center; }#ims_distance_table th:nth-child(3), #ims_distance_table td:nth-child(3) { text-align: right; }</style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+                $(document).ready(function() {
+                    let table = $('#ims_distance_table table').DataTable();
+    
+                    let type_order = 'custom-null-sort-pre';
+                    $.fn.dataTable.ext.type.order[type_order] = function(data) {
+                        if (data === "" || data === null || data === "Infinity") return Infinity;
+                        if (data === "-Infinity") return -Infinity;
+                        return parseFloat(data);
+                    };
+    
+                    table.on('order.dt', function(e, settings) {
+                        let order = settings.aaSorting[0];
+                        let colIndex = order[0];
+                        let sortDir = order[1];
+    
+                        $('#ims_distance_table table tbody tr td:nth-child(' + (colIndex + 1) + ')').each(function() {
+                            let cell = $(this);
+                            let val = cell.attr('data-order');
+                            if (val === "Infinity" || val === "-Infinity") {
+                                cell.attr('data-order', sortDir === 'asc' ? "-Infinity" : "Infinity");
+                            }
+                        });
+                    });
+    
+                    table.columns().every(function() {
+                        let column = this;
+                        let type = column.data().type();
+                        if (type === 'num') {
+                            column.order('custom-null-sort-pre');
+                        }
+                    });
+                });
+            </script>
+      </div><br>
+      <div style="height: 20px;"></div>
+    </div>
+  </body>
+</html>
