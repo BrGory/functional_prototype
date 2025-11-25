@@ -48,7 +48,7 @@ Here $\phi$ denotes latitude and $\lambda$ longitude (in radians).<br>**Notes.**
       <div style="height: 20px;"></div>
       <div class="explanation-section" id="bad_retrieval_correlation">
         <b>Bad Retireval Correlation</b>
-        <p>Bad retrieveal is defined where MaxCorr2 < MaxCorr1. There might be an error in the satellite image measurements. Here, a correlation is found between the bad retreival value (`Y`: 1; `N`: 0) and the `dist_to_water` value. Values close to zero indivate no correlation while 1 indicates perfect correlation. Negative values mean the relationship is oppositely correlated.</p>
+        <p>Bad retrieveal is defined where MaxCorr2 < MaxCorr1. There might be an error in the satellite image measurements. Here, a correlation is found between the bad retrieval value (`Y`: 1; `N`: 0) and the `dist_to_water` value. Values close to zero indivate no correlation while 1 indicates perfect correlation. Negative values mean the relationship is oppositely correlated.</p>
       </div><br>
       <div style="height: 20px;"></div>
       <div class="explanation-section" id="life_drift_page">
@@ -103,6 +103,69 @@ Then the circular correlation coefficient is
 \rho_c=\frac{\sum_{i=1}^n\sin(\alpha_i-\bar{\alpha})\,\sin(\beta_i-\bar{\beta})}{\sqrt{\Big(\sum_{i=1}^n\sin^2(\alpha_i-\bar{\alpha})\Big)\,\Big(\sum_{i=1}^n\sin^2(\beta_i-\bar{\beta})\Big)}}\,.
 \]
 **Notes.**<br>(1) Angles must be in radians inside the trig functions. Degrees converted via $\theta_\mathrm{rad}=\theta_\mathrm{deg}\,\pi/180$.<br>(2) $\rho_c\in[-1,1]$ analogous to Pearson's $r$.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="accuracy">
+        <b>Accuracy</b>
+        <p>Accuracy measures the overall fraction of correctly classified pixels, considering both ice and open water. It is defined as the ratio of true positives and true negatives to all evaluated pixels:
+\[
+\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}.
+\]
+Here, $TP$ is the number of true positives (both datasets report ice), $TN$ is the number of true negatives (both report open water), $FP$ is the number of false positives (dataset 1 reports ice while dataset 2 reports open water), and $FN$ is the number of false negatives (dataset 1 reports open water while dataset 2 reports ice).</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="precision">
+        <b>Precision (Positive Predictive Value)</b>
+        <p>Precision quantifies how reliable the ice detections are in dataset 1. It answers: of all pixels labeled as ice by dataset 1, what fraction are also ice in dataset 2?
+\[
+\text{Precision} = \frac{TP}{TP + FP}.
+\]
+High precision means there are few false-ice detections (low $FP$). When $TP + FP = 0$, precision is undefined and reported as NaN.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="sensitivity">
+        <b>Sensitivity (True Positive Rate)</b>
+        <p>Recall, also known as sensitivity or true positive rate, measures how well dataset 1 recovers the ice pixels identified by dataset 2. It answers: of all true ice pixels in dataset 2, what fraction are correctly labeled as ice by dataset 1?
+\[
+\text{Recall} = \frac{TP}{TP + FN}.
+\]
+High recall means few ice pixels are missed (low $FN$). When $TP + FN = 0$, recall is undefined and reported as NaN.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="specificity">
+        <b>Specificity (True Negative Rate)</b>
+        <p>Specificity, or true negative rate, measures how well dataset 1 correctly identifies open water. It answers: of all open-water pixels in dataset 2, what fraction are also labeled as open water by dataset 1?
+\[
+\text{Specificity} = \frac{TN}{TN + FP}.
+\]
+High specificity means few water pixels are incorrectly flagged as ice (low $FP$). When $TN + FP = 0$, specificity is undefined and reported as NaN.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="f1_den">
+        <b>F1 denominator (precision + recall)</b>
+        <p>The intermediate variable \texttt{f1\_den} is simply the sum of precision and recall:
+\[
+\text{f1\_den} = \text{Precision} + \text{Recall}.
+\]
+It appears in the denominator of the F1 score. When this sum is zero or not finite, the F1 score cannot be computed and is reported as NaN.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="F1">
+        <b>F1 Score</b>
+        <p>The F1 score is the harmonic mean of precision and recall, providing a single measure that balances both false positives and false negatives:
+\[
+F_1 = \frac{2\,\text{Precision}\,\text{Recall}}{\text{Precision} + \text{Recall}}.
+\]
+The F1 score is high only when both precision and recall are high. It is especially useful when the classes (ice vs open water) are imbalanced. When $\text{Precision} + \text{Recall} = 0$, the F1 score is undefined and reported as NaN.</p>
+      </div><br>
+      <div style="height: 20px;"></div>
+      <div class="explanation-section" id="bal_acc">
+        <b>Balanced Accuracy</b>
+        <p>Balanced accuracy averages the performance on the positive class (ice) and the negative class (open water) by combining recall (sensitivity) and specificity. It is defined as
+\[
+\text{Balanced Accuracy} = \frac{\text{Recall} + \text{Specificity}}{2}.
+\]
+This metric is particularly useful when the number of ice and open-water pixels is highly imbalanced, preventing an over-optimistic assessment that can occur when one class dominates.</p>
       </div><br>
       <div style="height: 20px;"></div>
     </div>
